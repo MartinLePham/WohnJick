@@ -22,25 +22,74 @@ bg = pygame.transform.scale(pygame.image.load('images/background/Background.png'
 char = [pygame.image.load('images/character_sprites/adventurer-idle-2-00.png'), pygame.image.load('images/character_sprites/adventurer-idle-2-01.png'), pygame.image.load('images/character_sprites/adventurer-idle-2-02.png'), pygame.image.load('images/character_sprites/adventurer-idle-2-03.png')]
 
 clock = pygame.time.Clock()
+class player():
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.vel = 5
+        self.isJump = False
+        self.left = False
+        self.right = False
+        self.jpleft = False
+        self.jpright = False
+        self.walkCount = 0
+        self.idleCount = 0
+        self.jumpframeCount = 0
+        self.isJump = False
+        self.jumpCount = 10
+        
+            
+    def draw(self, win):
+        if self.walkCount + 1 > 18: # 3 frames per walking frame
+            self.walkCount = 0
+            
+        if self.idleCount +1 > 15: # 5 frames per idle frame
+            self.idleCount = 0
+            
+        if self.jumpframeCount +1 > 9:
+            self.jumpframeCount = 0
+            
+        if self.left and not self.isJump:
+            win.blit(walkLeft[self.walkCount//3], (self.x,self.y))
+            self.walkCount += 1
+            
+        elif self.right and not self.isJump:
+            win.blit(walkRight[self.walkCount//3], (self.x,self.y))
+            self.walkCount += 1
+            
+        if self.isJump and self.right:
+            win.blit(jumpRight[self.jumpframeCount//3], (self.x,self.y))
+            
+        elif self.isJump and self.left:
+            win.blit(jumpLeft[self.jumpframeCount//3], (self.x,self.y))
+            
+        elif self.isJump and not self.right and not self.left:
+            win.blit(jumpRight[self.jumpframeCount//3], (self.x,self.y))
+            
+        if not self.left and not self.right and not self.isJump:
+            win.blit(char[self.idleCount//5], (self.x,self.y)) 
+            self.idleCount += 1        
+        
+#char_width = 30
+#char_height = 37
+#x = 0
+#y = SCREEN_HEIGHT-char_height-60
+#char_vel = 10
 
-char_width = 30
-char_height = 37
-x = 0
-y = SCREEN_HEIGHT-char_height-60
-char_vel = 10
+#left = False
+#right = False
+#jpleft = False
+#jpright = False
+#walkCount = 0
+#idleCount = 0
+#jumpframeCount = 0
 
-left = False
-right = False
-jpleft = False
-jpright = False
-walkCount = 0
-idleCount = 0
-jumpframeCount = 0
 
-isJump = False
-jumpCount = 10
 
 def redrawGameWindow():
+    '''
     global walkCount
     global idleCount
     global jumpframeCount
@@ -68,11 +117,13 @@ def redrawGameWindow():
     if not left and not right and not isJump:
         win.blit(char[idleCount//5], (x,y)) 
         idleCount += 1
-
-        
+    '''
+    win.blit(bg, (0,0))
+    adventurer.draw(win)
     pygame.display.update()     
     
 #mainloop
+adventurer = player (0, SCREEN_HEIGHT-100, 30, 37)
 run = True
 while run:
     clock.tick(60)
@@ -81,32 +132,32 @@ while run:
             run = False
             
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_a] and x > char_vel:
-        x -= char_vel
-        left = True
-        right = False
-    elif keys[pygame.K_d] and x < SCREEN_WIDTH-char_width:
-        x += char_vel
-        left = False
-        right = True
+    if keys[pygame.K_a] and adventurer.x > adventurer.vel:
+        adventurer.x -= adventurer.vel
+        adventurer.left = True
+        adventurer.right = False
+    elif keys[pygame.K_d] and adventurer.x < SCREEN_WIDTH-adventurer.width:
+        adventurer.x += adventurer.vel
+        adventurer.left = False
+        adventurer.right = True
     else:
-        right = False
-        left = False
-        walkCount = 0
+        adventurer.right = False
+        adventurer.left = False
+        adventurer.walkCount = 0
         
-    if not(isJump):
+    if not(adventurer.isJump):
         if keys[pygame.K_SPACE]:
-            isJump=True
-            right = False
-            left = False
-            walkCount = 0
+            adventurer.isJump=True
+            adventurer.right = False
+            adventurer.left = False
+            adventurer.walkCount = 0
     else:
-        if jumpCount>= -10:
-            y -= (jumpCount*abs(jumpCount))*0.25
-            jumpCount -= 1
+        if adventurer.jumpCount>= -10:
+            adventurer.y -= (adventurer.jumpCount*abs(adventurer.jumpCount))*0.25
+            adventurer.jumpCount -= 1
         else:
-            isJump = False
-            jumpCount = 10
+            adventurer.isJump = False
+            adventurer.jumpCount = 10
             
     redrawGameWindow()
     
