@@ -37,65 +37,23 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         
         
-        walkRight = [pygame.image.load('adventurer-run-00.png'), 
-                     pygame.image.load('adventurer-run-01.png'), 
-                     pygame.image.load('adventurer-run-02.png'), 
-                     pygame.image.load('adventurer-run-03.png'), 
-                     pygame.image.load('adventurer-run-04.png'), 
-                     pygame.image.load('adventurer-run-05.png')]
+        walkRight = [pygame.image.load('images/character_sprites/adventurer-run-00.png'), 
+                     pygame.image.load('images/character_sprites/adventurer-run-01.png'), 
+                     pygame.image.load('images/character_sprites/adventurer-run-02.png'), 
+                     pygame.image.load('images/character_sprites/adventurer-run-03.png'), 
+                     pygame.image.load('images/character_sprites/adventurer-run-04.png'), 
+                     pygame.image.load('images/character_sprites/adventurer-run-05.png')]
         for i in walkRight:
             self.walking_frames_r.append(i)
         
-        walkLeft = [pygame.transform.flip(pygame.image.load('adventurer-run-00.png'),True, False),
-                    pygame.transform.flip(pygame.image.load('adventurer-run-01.png'),True, False),
-                    pygame.transform.flip(pygame.image.load('adventurer-run-02.png'),True, False),
-                    pygame.transform.flip(pygame.image.load('adventurer-run-03.png'),True, False),
-                    pygame.transform.flip(pygame.image.load('adventurer-run-04.png'),True, False),
-                    pygame.transform.flip(pygame.image.load('adventurer-run-05.png'),True, False)]
+        walkLeft = [pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-run-00.png'),True, False),
+                    pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-run-01.png'),True, False),
+                    pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-run-02.png'),True, False),
+                    pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-run-03.png'),True, False),
+                    pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-run-04.png'),True, False),
+                    pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-run-05.png'),True, False)]
         for i in walkLeft:    
             self.walking_frames_l.append(i)
-# =============================================================================
-#         sprite_sheet = SpriteSheet("p1_walk.png")
-#         # Load all the right facing images into a list
-#         image = sprite_sheet.get_image(0, 0, 66, 90)
-#         self.walking_frames_r.append(image)
-#         image = sprite_sheet.get_image(66, 0, 66, 90)
-#         self.walking_frames_r.append(image)
-#         image = sprite_sheet.get_image(132, 0, 67, 90)
-#         self.walking_frames_r.append(image)
-#         image = sprite_sheet.get_image(0, 93, 66, 90)
-#         self.walking_frames_r.append(image)
-#         image = sprite_sheet.get_image(66, 93, 66, 90)
-#         self.walking_frames_r.append(image)
-#         image = sprite_sheet.get_image(132, 93, 72, 90)
-#         self.walking_frames_r.append(image)
-#         image = sprite_sheet.get_image(0, 186, 70, 90)
-#         self.walking_frames_r.append(image)
-# 
-#         # Load all the right facing images, then flip them
-#         # to face left.
-#         image = sprite_sheet.get_image(0, 0, 66, 90)
-#         image = pygame.transform.flip(image, True, False)
-#         self.walking_frames_l.append(image)
-#         image = sprite_sheet.get_image(66, 0, 66, 90)
-#         image = pygame.transform.flip(image, True, False)
-#         self.walking_frames_l.append(image)
-#         image = sprite_sheet.get_image(132, 0, 67, 90)
-#         image = pygame.transform.flip(image, True, False)
-#         self.walking_frames_l.append(image)
-#         image = sprite_sheet.get_image(0, 93, 66, 90)
-#         image = pygame.transform.flip(image, True, False)
-#         self.walking_frames_l.append(image)
-#         image = sprite_sheet.get_image(66, 93, 66, 90)
-#         image = pygame.transform.flip(image, True, False)
-#         self.walking_frames_l.append(image)
-#         image = sprite_sheet.get_image(132, 93, 72, 90)
-#         image = pygame.transform.flip(image, True, False)
-#         self.walking_frames_l.append(image)
-#         image = sprite_sheet.get_image(0, 186, 70, 90)
-#         image = pygame.transform.flip(image, True, False)
-#         self.walking_frames_l.append(image)
-# =============================================================================
 
         # Set the image the player starts with
         self.image = self.walking_frames_r[0]
@@ -147,7 +105,14 @@ class Player(pygame.sprite.Sprite):
 
             if isinstance(block, MovingPlatform):
                 self.rect.x += block.change_x
-
+                
+# =============================================================================
+#         #Check to see if enemy hits us
+#         enemy_hit_list = pygame.sprite.spritecollide(self, self.level.enemy_list, False)
+#         for enemy in enemy_hit_list:
+#             if 
+# =============================================================================
+        
     def calc_grav(self):
         """ Calculate effect of gravity. """
         if self.change_y == 0:

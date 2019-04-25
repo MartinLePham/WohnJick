@@ -39,12 +39,6 @@ BRIDGE_RIGHT          = (688, 188, 41, 30)
 FLOATING_GRASS        = (50, 28, 58, 65)
 FLOATING_STONE        = (48, 121, 48, 39)
 
-GRASS_LEFT            = (576, 720, 70, 70)
-GRASS_RIGHT           = (576, 576, 70, 70)
-GRASS_MIDDLE          = (504, 576, 70, 70)
-STONE_PLATFORM_LEFT   = (432, 720, 70, 40)
-STONE_PLATFORM_MIDDLE = (648, 648, 70, 40)
-STONE_PLATFORM_RIGHT  = (792, 648, 70, 40)
 
 class Platform(pygame.sprite.Sprite):
     """ Platform the user can jump on """

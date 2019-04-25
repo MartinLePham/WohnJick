@@ -57,7 +57,7 @@ def main():
     player.level = current_level
 
     player.rect.x = 800
-    player.rect.y = constants.SCREEN_HEIGHT - player.rect.height
+    player.rect.y = constants.SCREEN_HEIGHT - player.rect.height - 70
     active_sprite_list.add(player)
 
     #Loop until the user clicks the close button.
@@ -77,7 +77,7 @@ def main():
                     player.go_left()
                 if event.key == pygame.K_RIGHT:
                     player.go_right()
-                if event.key == pygame.K_UP:
+                if event.key == pygame.K_SPACE:
                     player.jump()
 
             if event.type == pygame.KEYUP:

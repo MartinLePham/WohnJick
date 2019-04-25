@@ -8,5 +8,5 @@ WHITE    = ( 255, 255, 255)
 BLUE     = (   0,   0, 255)
 
 # Screen dimensions
-SCREEN_WIDTH  = 2200
+SCREEN_WIDTH  = 2800
 SCREEN_HEIGHT = 800

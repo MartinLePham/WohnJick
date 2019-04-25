@@ -14,7 +14,7 @@ class Level():
     enemy_list = None
 
     # Background image
-    background = None
+    background = []
 
     # How far this world has been scrolled left/right
     world_shift = 0
@@ -40,6 +40,7 @@ class Level():
         # to give a feeling of depth.
         screen.fill(constants.WHITE)
         screen.blit(self.background,(self.world_shift // 3,0))
+        
 
         # Draw all the sprite lists that we have
         self.platform_list.draw(screen)
@@ -70,19 +71,25 @@ class Level_01(Level):
         
         self.level_limit = -1*constants.SCREEN_WIDTH
         self.background = pygame.transform.scale(pygame.image.load('Background.png'), (abs(self.level_limit),constants.SCREEN_HEIGHT))
+
+        
         self.background.set_colorkey(constants.WHITE)
         
 
         # Array with type of platform, and x, y location of the platform.
         level = [ #Top left Platforms
                   [platforms.STONE_CLIFF_RIGHT, 480, 280],
-                  
                   #Middle Platform
                   [platforms.GRASS_CLIFF_LEFT, 940, 500],
                   [platforms.GRASS_CLIFF_RIGHT, 1400, 500],
-                  
+                  #Top Right Platform
+#                  [platforms.GRASS_FLOOR_THICK, 0, 730]
                   
                   ]
+        #Bottom
+        for x in range(0, constants.SCREEN_WIDTH, 32):
+            level.append([platforms.GRASS_FLOOR_GRASSY, x, 730])
+        
         #Top Left Platforms
         for x in range(0, 240, 16):
             level.append([platforms.STONE_CLIFF_MIDDLE, x, 200])
@@ -106,6 +113,13 @@ class Level_01(Level):
         for x in range(940+88, 1400, 16):
             level.append([platforms.STONE_CLIFF_FILL, x, 522])
             level.append([platforms.STONE_CLIFF_FILL, x, 560])
+            
+        #Top Right Platforms
+        for x in range(1800, constants.SCREEN_WIDTH, 48):
+            level.append([platforms.STONE_PLATFORM_LONG, x, 200])
+        for x in range(1600, constants.SCREEN_WIDTH, 48):
+            level.append([platforms.STONE_PLATFORM_LONG, x, 400])
+        
 
         #Left and Rights Walls
 # =============================================================================
@@ -138,7 +152,18 @@ class Level_01(Level):
         
         #Middle Left Floating Platform
         block = platforms.MovingPlatform(platforms.FLOATING_GRASS)
-        block.rect.x = 850
+        block.rect.x = 860
+        block.rect.y = 500
+        block.boundary_top = 500
+        block.boundary_bottom = constants.SCREEN_HEIGHT
+        block.change_y = 1
+        block.player = self.player
+        block.level = self
+        self.platform_list.add(block)
+        
+        #Middle Right Floating Platform
+        block = platforms.MovingPlatform(platforms.FLOATING_GRASS)
+        block.rect.x = 1460
         block.rect.y = 500
         block.boundary_top = 500
         block.boundary_bottom = constants.SCREEN_HEIGHT
