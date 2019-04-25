@@ -36,7 +36,7 @@ def main():
     pygame.init()
 
     # Set the height and width of the screen
-    size = [constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT]
+    size = [1600, constants.SCREEN_HEIGHT]
     screen = pygame.display.set_mode(size)
 
     pygame.display.set_caption("Platformer with sprite sheets")
@@ -95,11 +95,11 @@ def main():
         # If the player gets near the right side, shift the world left (-x)
         if player.rect.x >= 800:
             diff = player.rect.x - 800
-            if current_level.world_shift > current_level.level_limit:
+            if current_level.world_shift - size[0] >= current_level.level_limit:
                 player.rect.x = 800
                 current_level.shift_world(-diff)
             else:
-                current_level.world_shift = 0
+                current_level.shift_world(0)
 
         # If the player gets near the left side, shift the world right (+x)
         

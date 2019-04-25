@@ -18,7 +18,6 @@ class Level():
 
     # How far this world has been scrolled left/right
     world_shift = 0
-    level_limit = -1000
 
     def __init__(self, player):
         """ Constructor. Pass in a handle to player. Needed for when moving platforms
@@ -68,17 +67,19 @@ class Level_01(Level):
 
         # Call the parent constructor
         Level.__init__(self, player)
-
-        self.background = pygame.transform.scale(pygame.image.load('Background.png'), (constants.SCREEN_WIDTH,constants.SCREEN_HEIGHT))
+        
+        self.level_limit = -1*constants.SCREEN_WIDTH
+        self.background = pygame.transform.scale(pygame.image.load('Background.png'), (abs(self.level_limit),constants.SCREEN_HEIGHT))
         self.background.set_colorkey(constants.WHITE)
-        self.level_limit = -2500
+        
 
         # Array with type of platform, and x, y location of the platform.
         level = [ #Top left Platforms
                   [platforms.STONE_CLIFF_RIGHT, 480, 280],
                   
                   #Middle Platform
-                  [platforms.GRASS_CLIFF_LEFT, 850, 500]
+                  [platforms.GRASS_CLIFF_LEFT, 940, 500],
+                  [platforms.GRASS_CLIFF_RIGHT, 1400, 500],
                   
                   
                   ]
@@ -94,12 +95,26 @@ class Level_01(Level):
             
         #Middle Platform
         for y in range(602, constants.SCREEN_HEIGHT, 78):
-            level.append([platforms.GRASS_CLIFF_LEFT_FILL, 850, y])
-    
+            level.append([platforms.GRASS_CLIFF_LEFT_FILL, 940, y])
+        for y in range(586, constants.SCREEN_HEIGHT, 60):
+            level.append([platforms.GRASS_CLIFF_RIGHT_FILL, 1400, y])
+        for x in range(1028, 1400, 28):
+            level.append([platforms.GRASS_FLOOR_SKINNY, x, 500])
+        for x in range(940+31, 1400, 16):
+            for y in range(500+102, constants.SCREEN_HEIGHT, 48):    
+                level.append([platforms.STONE_CLIFF_FILL, x, y])
+        for x in range(940+88, 1400, 16):
+            level.append([platforms.STONE_CLIFF_FILL, x, 522])
+            level.append([platforms.STONE_CLIFF_FILL, x, 560])
+
         #Left and Rights Walls
-#        for y in range(0, constants.SCREEN_HEIGHT, 70):
-#            level.append([platforms.GRASS_MIDDLE, 0, y])
-#            level.append([platforms.GRASS_MIDDLE, 3000, y])
+# =============================================================================
+#         for y in range(0, constants.SCREEN_HEIGHT, 70):
+#             level.append([platforms.GRASS_FLOOR_SKINNY, 0, y])
+#             level.append([platforms.GRASS_FLOOR_SKINNY, 2100, y])
+#             level.append([platforms.GRASS_FLOOR_SKINNY, 1300, y])
+# =============================================================================
+
 
         # Go through the array above and add platforms
         for platform in level:
@@ -110,17 +125,27 @@ class Level_01(Level):
             self.platform_list.add(block)
 
         # Add a custom moving platform
-# =============================================================================
-#         block = platforms.MovingPlatform(platforms.STONE_PLATFORM_MIDDLE)
-#         block.rect.x = 1350
-#         block.rect.y = 280
-#         block.boundary_left = 1350
-#         block.boundary_right = 1600
-#         block.change_x = 1
-#         block.player = self.player
-#         block.level = self
-#         self.platform_list.add(block)
-# =============================================================================
+        #Left Floating Platform
+        block = platforms.MovingPlatform(platforms.FLOATING_STONE)
+        block.rect.x = 550
+        block.rect.y = 280
+        block.boundary_top = 280
+        block.boundary_bottom = constants.SCREEN_HEIGHT
+        block.change_y = 1
+        block.player = self.player
+        block.level = self
+        self.platform_list.add(block)        
+        
+        #Middle Left Floating Platform
+        block = platforms.MovingPlatform(platforms.FLOATING_GRASS)
+        block.rect.x = 850
+        block.rect.y = 500
+        block.boundary_top = 500
+        block.boundary_bottom = constants.SCREEN_HEIGHT
+        block.change_y = 1
+        block.player = self.player
+        block.level = self
+        self.platform_list.add(block)
 
 
 # Create platforms for the level

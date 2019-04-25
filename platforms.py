@@ -11,9 +11,9 @@ from spritesheet_functions import SpriteSheet
 #   Y location of sprite
 #   Width of sprite
 #   Height of sprite
-BLACK_DOT             = (0, 0, 16, 16)
+BLACK_DOT             = (112, 272, 16, 16)
 
-GRASS_FLOOR_SKINNY    = (304, 186, 32, 22)
+GRASS_FLOOR_SKINNY    = (308, 186, 28, 22)
 GRASS_FLOOR_THICK     = (192, 186, 48, 38)
 GRASS_FLOOR_GRASSY    = (256, 180, 32, 44)
 
@@ -23,8 +23,9 @@ STONE_PLATFORM_SHORT     = (537, 56, 32, 32)
 STONE_PLATFORM_LONG      = (601, 56, 48, 32)
 
 GRASS_CLIFF_LEFT      = (40, 186, 88, 102)
-GRASS_CLIFF_RIGHT     = (512, 186, 44, 86)
 GRASS_CLIFF_LEFT_FILL = (40, 210, 31, 78)
+GRASS_CLIFF_RIGHT     = (512, 186, 44, 86)
+GRASS_CLIFF_RIGHT_FILL = (512, 212, 44, 60)
 
 STONE_CLIFF_LEFT      = (325, 43, 59, 97)
 STONE_CLIFF_MIDDLE    = (400, 43, 16, 96)
@@ -34,6 +35,9 @@ STONE_CLIFF_FILL      = (400, 65, 16, 48)
 BRIDGE_LEFT           = (583, 188, 41, 30)
 BRIDGE_MIDDLE         = (640, 187, 32, 31)
 BRIDGE_RIGHT          = (688, 188, 41, 30)
+
+FLOATING_GRASS        = (50, 28, 58, 65)
+FLOATING_STONE        = (48, 121, 48, 39)
 
 GRASS_LEFT            = (576, 720, 70, 70)
 GRASS_RIGHT           = (576, 576, 70, 70)
