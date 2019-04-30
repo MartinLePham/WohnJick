@@ -15,7 +15,7 @@ button = Button(window, text = "START", command=processSTART)
 label.pack() #place button on the window
 button.pack() #place button on the window
 
-window.mainloop() #somewhere inside turtle.done(), this gets called.
+window.mainloop() 
 
 
 
