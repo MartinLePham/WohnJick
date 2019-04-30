@@ -72,13 +72,43 @@ def main():
             if event.type == pygame.QUIT: # If user clicked close
                 done = True # Flag that we are done so we exit this loop
 
+# =============================================================================
+#             keys = pygame.key.get_pressed()
+#             if keys[pygame.K_LEFT]:
+#                 player.RunLeft()
+#                 
+#             elif keys[pygame.K_RIGHT]:
+#                 player.RunRight()
+#             
+#             if keys[pygame.K_f]:
+#                 player.Attack()
+#             
+#             elif keys[pygame.K_r]:
+#                 player.Shoot()
+#                 
+#             if keys[pygame.K_SPACE]:
+#                 player.jump()    
+#                 
+#             elif keys[pygame.K_DOWN]:
+#                 player.Crouch()
+#             
+#             else:
+#                 player.stop()
+# =============================================================================
+                
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    player.go_left()
+                    player.RunLeft()
                 if event.key == pygame.K_RIGHT:
-                    player.go_right()
+                    player.RunRight()
                 if event.key == pygame.K_SPACE:
                     player.jump()
+                if event.key == pygame.K_DOWN:
+                    player.Crouch()
+                elif event.key == pygame.K_f:
+                    player.Attack()
+                elif event.key == pygame.K_r:
+                    player.Shoot()
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT and player.change_x < 0:
@@ -87,7 +117,7 @@ def main():
                     player.stop()
 
         # Update the player.
-        active_sprite_list.update()
+        active_sprite_list.update(screen)
 
         # Update items in the level
         current_level.update()
@@ -110,7 +140,11 @@ def main():
                 current_level.shift_world(diff)
             else:
                 current_level.world_shift = 0
-                
+        
+        if player.rect.x == 0:
+            player.change_x = 0
+        if player.rect.x + player.rect.width == constants.SCREEN_WIDTH:
+            player.change_x = 0
             
 
         # If the player gets to the end of the level, go to the next level
