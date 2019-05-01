@@ -162,27 +162,10 @@ class Enemy_Bandit(pygame.sprite.Sprite):
             elif self.right and not self.isJump and not self.isIdle and not self.isAttack and not self.isCrouch and not self.isBow:
                 self.image = self.walking_frames_R[self.walkCount//3] 
                 self.walkCount += 1
-                
-            elif self.isJump and self.right and not self.isAttack:
-                self.image = self.jump_frames_R[self.jumpCount//3] 
-                self.jumpCount +=1
-            
-            elif self.isJump and self.right and self.isAttack:
-                self.image = self.air_attack_frames_R[self.airAttackCount//3] 
-                self.airAttackCount +=1
-                
+             
             elif self.isAttack and self.right and not self.isJump:
                 self.image = self.attack_frames_R[self.attackCount//2]
                 self.attackCount += 1
-                
-            elif self.isCrouch and self.right and not self.isJump and not self.isIdle and not self.isAttack:
-                self.image = self.crouch_frames_R[self.crouchCount//5] 
-                self.crouchCount += 1
-                
-            elif self.isBow and self.right and not self.isAttack and not self.isJump and not self.isIdle:
-                if self.ammo > 0:
-                    self.image = self.shoot_bow_frames_R[self.bowCount//3] 
-                    self.bowCount += 1
                 else:
                     self.image = self.idle_frames_R[self.bowCount//3] 
                     
@@ -193,13 +176,6 @@ class Enemy_Bandit(pygame.sprite.Sprite):
                 self.image = self.idle_frames_L[self.idleCount//5] 
                 self.idleCount += 1
                 
-            elif self.left and not self.isJump and not self.isIdle and not self.isAttack and not self.isCrouch and not self.isBow:
-                self.image = self.walking_frames_L[self.walkCount//3]  
-                self.walkCount += 1
-            
-            elif self.isJump and self.left and not self.isAttack:
-                self.image = self.jump_frames_L[self.jumpCount//3] 
-                self.jumpCount +=1
         
             elif self.isJump and self.left and self.isAttack:
                 self.image = self.air_attack_frames_L[self.airAttackCount//3] 
@@ -209,14 +185,6 @@ class Enemy_Bandit(pygame.sprite.Sprite):
                 self.image = self.attack_frames_L[self.attackCount//2] 
                 self.attackCount += 1
         
-            elif self.isCrouch and self.left and not self.isJump and not self.isIdle and not self.isAttack:
-                self.image = self.crouch_frames_L[self.crouchCount//5] 
-                self.crouchCount += 1
-        
-            elif self.isBow and self.left and not self.isAttack and not self.isJump and not self.isIdle:
-                if self.ammo > 0:
-                    self.image = self.shoot_bow_frames_L[self.bowCount//3] 
-                    self.bowCount += 1
                 else:
                     self.image = self.idle_frames_L[self.bowCount//3] 
         
@@ -250,14 +218,6 @@ class Enemy_Bandit(pygame.sprite.Sprite):
 
             if isinstance(block, MovingPlatform):
                 self.rect.x += block.change_x
-                
-# =============================================================================
-#         #Check to see if enemy hits us
-#         enemy_hit_list = pygame.sprite.spritecollide(self, self.level.enemy_list, False)
-#         for enemy in enemy_hit_list:
-#             if 
-# =============================================================================
-        
     def calc_grav(self):
         """ Calculate effect of gravity. """
         if self.change_y == 0:
@@ -289,11 +249,7 @@ class Enemy_Bandit(pygame.sprite.Sprite):
         self.isIdle = True
         self.walkCount = 0
         self.isAttack = False
-        self.isBow = False
-        self.bowCount = 0
         self.attackCount = 0
-        self.airAttackCount = 0
-        self.jumpCount = 0
     
     def RunLeft(self):
         self.change_x = -10
@@ -301,12 +257,7 @@ class Enemy_Bandit(pygame.sprite.Sprite):
         self.right = False
         self.isIdle = False
         self.isAttack = False
-        self.isCrouch = False
-        self.isBow = False
-        self.bowCount = 0
         self.attackCount = 0
-        self.airAttackCount = 0
-        self.crouchCount = 0
         self.direction = "L"
         
             
@@ -316,19 +267,12 @@ class Enemy_Bandit(pygame.sprite.Sprite):
         self.right = True
         self.isIdle = False
         self.isAttack = False
-        self.isCrouch = False
-        self.isBow = False
         self.bowCount = 0
         self.attackCount = 0
-        self.airAttackCount = 0
-        self.crouchCount = 0
         self.direction = "R"
                     
     def Attack (self):
         self.isAttack = True
         self.isIdle = False
-        self.isCrouch = False
-        self.isBow = False
-        self.bowCount = 0        
-        self.crouchCount = 0
+
         
