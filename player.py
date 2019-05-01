@@ -38,7 +38,6 @@ class Player(pygame.sprite.Sprite):
     arrow_frames_R = []
 
     # What direction is the player facing?
-    direction = "R"
 
     # List of sprites we can bump against
     level = None
@@ -251,75 +250,72 @@ class Player(pygame.sprite.Sprite):
             self.ammo -= 1
         
         self.rect.x += self.change_x
-        pos = self.rect.x + self.level.world_shift
         
         #Right Movements
-        if self.direction == "R":
             
-            if self.isIdle and self.right and not self.isJump:
-                self.image = self.idle_frames_R[self.idleCount//5]
-                self.idleCount += 1
+        if self.isIdle and self.right and not self.isJump:
+            self.image = self.idle_frames_R[self.idleCount//5]
+            self.idleCount += 1
+        
+        elif self.right and not self.isJump and not self.isIdle and not self.isAttack and not self.isCrouch and not self.isBow:
+            self.image = self.walking_frames_R[self.walkCount//3] 
+            self.walkCount += 1
             
-            elif self.right and not self.isJump and not self.isIdle and not self.isAttack and not self.isCrouch and not self.isBow:
-                self.image = self.walking_frames_R[self.walkCount//3] 
-                self.walkCount += 1
-                
-            elif self.isJump and self.right and not self.isAttack:
-                self.image = self.jump_frames_R[self.jumpCount//3] 
-                self.jumpCount +=1
+        elif self.isJump and self.right and not self.isAttack:
+            self.image = self.jump_frames_R[self.jumpCount//3] 
+            self.jumpCount +=1
+        
+        elif self.isJump and self.right and self.isAttack:
+            self.image = self.air_attack_frames_R[self.airAttackCount//3] 
+            self.airAttackCount +=1
             
-            elif self.isJump and self.right and self.isAttack:
-                self.image = self.air_attack_frames_R[self.airAttackCount//3] 
-                self.airAttackCount +=1
+        elif self.isAttack and self.right and not self.isJump:
+            self.image = self.attack_frames_R[self.attackCount//2]
+            self.attackCount += 1
+            
+        elif self.isCrouch and self.right and not self.isJump and not self.isIdle and not self.isAttack:
+            self.image = self.crouch_frames_R[self.crouchCount//5] 
+            self.crouchCount += 1
+            
+        elif self.isBow and self.right and not self.isAttack and not self.isJump and not self.isIdle:
+            if self.ammo > 0:
+                self.image = self.shoot_bow_frames_R[self.bowCount//3] 
+                self.bowCount += 1
+            else:
+                self.image = self.idle_frames_R[self.bowCount//3] 
                 
-            elif self.isAttack and self.right and not self.isJump:
-                self.image = self.attack_frames_R[self.attackCount//2]
-                self.attackCount += 1
-                
-            elif self.isCrouch and self.right and not self.isJump and not self.isIdle and not self.isAttack:
-                self.image = self.crouch_frames_R[self.crouchCount//5] 
-                self.crouchCount += 1
-                
-            elif self.isBow and self.right and not self.isAttack and not self.isJump and not self.isIdle:
-                if self.ammo > 0:
-                    self.image = self.shoot_bow_frames_R[self.bowCount//3] 
-                    self.bowCount += 1
-                else:
-                    self.image = self.idle_frames_R[self.bowCount//3] 
-                    
         #Left Movements            
-        else:
+        
+        if self.isIdle and self.left and not self.isJump:
+            self.image = self.idle_frames_L[self.idleCount//5] 
+            self.idleCount += 1
             
-            if self.isIdle and self.left and not self.isJump:
-                self.image = self.idle_frames_L[self.idleCount//5] 
-                self.idleCount += 1
-                
-            elif self.left and not self.isJump and not self.isIdle and not self.isAttack and not self.isCrouch and not self.isBow:
-                self.image = self.walking_frames_L[self.walkCount//3]  
-                self.walkCount += 1
-            
-            elif self.isJump and self.left and not self.isAttack:
-                self.image = self.jump_frames_L[self.jumpCount//3] 
-                self.jumpCount +=1
+        elif self.left and not self.isJump and not self.isIdle and not self.isAttack and not self.isCrouch and not self.isBow:
+            self.image = self.walking_frames_L[self.walkCount//3]  
+            self.walkCount += 1
         
-            elif self.isJump and self.left and self.isAttack:
-                self.image = self.air_attack_frames_L[self.airAttackCount//3] 
-                self.airAttackCount +=1
-        
-            elif self.isAttack and self.left and not self.isJump:
-                self.image = self.attack_frames_L[self.attackCount//2] 
-                self.attackCount += 1
-        
-            elif self.isCrouch and self.left and not self.isJump and not self.isIdle and not self.isAttack:
-                self.image = self.crouch_frames_L[self.crouchCount//5] 
-                self.crouchCount += 1
-        
-            elif self.isBow and self.left and not self.isAttack and not self.isJump and not self.isIdle:
-                if self.ammo > 0:
-                    self.image = self.shoot_bow_frames_L[self.bowCount//3] 
-                    self.bowCount += 1
-                else:
-                    self.image = self.idle_frames_L[self.bowCount//3] 
+        elif self.isJump and self.left and not self.isAttack:
+            self.image = self.jump_frames_L[self.jumpCount//3] 
+            self.jumpCount +=1
+    
+        elif self.isJump and self.left and self.isAttack:
+            self.image = self.air_attack_frames_L[self.airAttackCount//3] 
+            self.airAttackCount +=1
+    
+        elif self.isAttack and self.left and not self.isJump:
+            self.image = self.attack_frames_L[self.attackCount//2] 
+            self.attackCount += 1
+    
+        elif self.isCrouch and self.left and not self.isJump and not self.isIdle and not self.isAttack:
+            self.image = self.crouch_frames_L[self.crouchCount//5] 
+            self.crouchCount += 1
+    
+        elif self.isBow and self.left and not self.isAttack and not self.isJump and not self.isIdle:
+            if self.ammo > 0:
+                self.image = self.shoot_bow_frames_L[self.bowCount//3] 
+                self.bowCount += 1
+            else:
+                self.image = self.idle_frames_L[self.bowCount//3] 
         
 
         # See if we hit anything
@@ -385,22 +381,8 @@ class Player(pygame.sprite.Sprite):
         if len(platform_hit_list) > 0 or self.rect.bottom >= constants.SCREEN_HEIGHT:
             self.change_y = -20
 
-    # Player-controlled movement:
-    def go_left(self):
-        """ Called when the user hits the left arrow. """
-        self.change_x = -10
-        self.direction = "L"
-
-    def go_right(self):
-        """ Called when the user hits the right arrow. """
-        self.change_x = 10
-        self.direction = "R"
-
-    def stop(self):
-        """ Called when the user lets off the keyboard. """
-        self.change_x = 0
-    
     def Idle(self):
+        self.change_x = 0
         self.isIdle = True
         self.walkCount = 0
         self.isAttack = False
@@ -432,7 +414,6 @@ class Player(pygame.sprite.Sprite):
         self.attackCount = 0
         self.airAttackCount = 0
         self.crouchCount = 0
-        self.direction = "L"
         
             
     def RunRight (self):
@@ -447,7 +428,6 @@ class Player(pygame.sprite.Sprite):
         self.attackCount = 0
         self.airAttackCount = 0
         self.crouchCount = 0
-        self.direction = "R"
             
     def Jump(self):
         self.isJump=True

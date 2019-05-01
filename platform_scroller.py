@@ -112,9 +112,9 @@ def main():
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT and player.change_x < 0:
-                    player.stop()
+                    player.Idle()
                 if event.key == pygame.K_RIGHT and player.change_x > 0:
-                    player.stop()
+                    player.Idle()
 
         # Update the player.
         active_sprite_list.update(screen)
