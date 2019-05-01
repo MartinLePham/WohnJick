@@ -156,8 +156,6 @@ class Enemy_Bandit(pygame.sprite.Sprite):
             elif self.isAttack and self.right and not self.isJump:
                 self.image = self.attack_frames_R[self.attackCount//2]
                 self.attackCount += 1
-                else:
-                    self.image = self.idle_frames_R[self.bowCount//3] 
                     
         #Left Movements            
         else:
@@ -165,18 +163,11 @@ class Enemy_Bandit(pygame.sprite.Sprite):
             if self.isIdle and self.left and not self.isJump:
                 self.image = self.idle_frames_L[self.idleCount//5] 
                 self.idleCount += 1
-                
-        
-            elif self.isJump and self.left and self.isAttack:
-                self.image = self.air_attack_frames_L[self.airAttackCount//3] 
-                self.airAttackCount +=1
         
             elif self.isAttack and self.left and not self.isJump:
                 self.image = self.attack_frames_L[self.attackCount//2] 
                 self.attackCount += 1
-        
-                else:
-                    self.image = self.idle_frames_L[self.bowCount//3] 
+
         
 
         # See if we hit anything
