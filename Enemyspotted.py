@@ -44,26 +44,16 @@ class Enemy_Bandit(pygame.sprite.Sprite):
 
         # Call the parent's constructor
         pygame.sprite.Sprite.__init__(self)
-        
-        self.isJump = False
+       
         self.left = False
         self.right = True
         self.isIdle = True
         self.jpleft = False
         self.jpright = False
         self.isAttack = False
-        self.isJump = False
-        self.isCrouch = False
-        self.isBow= False
-        self.crouchCount = 0
         self.walkCount = 0
         self.idleCount = 0
-        self.jumpCount = 0
         self.attackCount = 0
-        self.airAttackCount = 0
-        self.jumpCount = 10
-        self.bowCount = 0
-        self.ammo = 10
         
         walkRight = [pygame.image.load('/Users/rachelengelbrecht/Desktop/Bandit_Running/Bandit_Running_001.png'), 
                      pygame.image.load('/Users/rachelengelbrecht/Desktop/Bandit_Running/Bandit_Running_002.png'), 
@@ -267,7 +257,6 @@ class Enemy_Bandit(pygame.sprite.Sprite):
         self.right = True
         self.isIdle = False
         self.isAttack = False
-        self.bowCount = 0
         self.attackCount = 0
         self.direction = "R"
                     
