@@ -4,6 +4,7 @@ import constants
 
 from platforms import MovingPlatform
 from spritesheet_functions import SpriteSheet
+
 class Enemy_Bandit(pygame.sprite.Sprite):
     """ This class represents the bar at the bottom that the player
     controls. """
@@ -22,8 +23,6 @@ class Enemy_Bandit(pygame.sprite.Sprite):
     attack_frames_L = []
     attack_frames_R = []
 
-    # What direction is the player facing?
-    direction = "R"
 
     # List of sprites we can bump against
     level = None
@@ -130,35 +129,31 @@ class Enemy_Bandit(pygame.sprite.Sprite):
         
         
         self.rect.x += self.change_x
-        pos = self.rect.x + self.level.world_shift
         
         #Right Movements
-        if self.direction == "R":
-            
-            if self.isIdle and self.right and not self.isJump:
-                self.image = self.idle_frames_R[self.idleCount//5]
-                self.idleCount += 1
-            
-            elif self.right and not self.isJump and not self.isIdle and not self.isAttack and not self.isCrouch and not self.isBow:
-                self.image = self.walking_frames_R[self.walkCount//3] 
-                self.walkCount += 1
-             
-            elif self.isAttack and self.right and not self.isJump:
-                self.image = self.attack_frames_R[self.attackCount//2]
+        
+        if self.isIdle and self.right and not self.isJump:
+            self.image = self.idle_frames_R[self.idleCount//5]
+            self.idleCount += 1
+        
+        elif self.right and not self.isJump and not self.isIdle and not self.isAttack and not self.isCrouch and not self.isBow:
+            self.image = self.walking_frames_R[self.walkCount//3] 
+            self.walkCount += 1
+         
+        elif self.isAttack and self.right and not self.isJump:
+            self.image = self.attack_frames_R[self.attackCount//2]
                 self.attackCount += 1
                     
         #Left Movements            
-        else:
             
-            if self.isIdle and self.left and not self.isJump:
-                self.image = self.idle_frames_L[self.idleCount//5] 
-                self.idleCount += 1
-        
-            elif self.isAttack and self.left and not self.isJump:
-                self.image = self.attack_frames_L[self.attackCount//2] 
-                self.attackCount += 1
+        if self.isIdle and self.left and not self.isJump:
+            self.image = self.idle_frames_L[self.idleCount//5] 
+            self.idleCount += 1
+    
+        elif self.isAttack and self.left and not self.isJump:
+            self.image = self.attack_frames_L[self.attackCount//2] 
+            self.attackCount += 1
 
-        
 
         # See if we hit anything
         block_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
@@ -189,6 +184,7 @@ class Enemy_Bandit(pygame.sprite.Sprite):
 
             if isinstance(block, MovingPlatform):
                 self.rect.x += block.change_x
+                
     def calc_grav(self):
         """ Calculate effect of gravity. """
         if self.change_y == 0:
@@ -202,19 +198,6 @@ class Enemy_Bandit(pygame.sprite.Sprite):
             self.rect.y = constants.SCREEN_HEIGHT - self.rect.height
 
     # Player-controlled movement:
-    def go_left(self):
-        """ Called when the user hits the left arrow. """
-        self.change_x = -10
-        self.direction = "L"
-
-    def go_right(self):
-        """ Called when the user hits the right arrow. """
-        self.change_x = 10
-        self.direction = "R"
-
-    def stop(self):
-        """ Called when the user lets off the keyboard. """
-        self.change_x = 0
     
     def Idle(self):
         self.isIdle = True
@@ -228,9 +211,7 @@ class Enemy_Bandit(pygame.sprite.Sprite):
         self.right = False
         self.isIdle = False
         self.isAttack = False
-        self.attackCount = 0
-        self.direction = "L"
-        
+        self.attackCount = 0       
             
     def RunRight (self):
         self.change_x = 10
@@ -239,26 +220,25 @@ class Enemy_Bandit(pygame.sprite.Sprite):
         self.isIdle = False
         self.isAttack = False
         self.attackCount = 0
-        self.direction = "R"
                     
     def Attack (self):
         self.isAttack = True
         self.isIdle = False
+        
     def Health (self):
         self.health=3
         def Subtract_Health(self):
             self.health = self.health - 1
 #          if self.health <= 0:
+            
 class Enemy_Blob(pygame.sprite.Sprite):
+    
     walking_frames_L = []
     walking_frames_R = []
     idle_frames_L = []
     idle_frames_R = []
     attack_frames_L = []
     attack_frames_R = []
-
-    # What direction is the player facing?
-    direction = "R"
 
     # List of sprites we can bump against
     level = None
@@ -370,35 +350,33 @@ class Enemy_Blob(pygame.sprite.Sprite):
         pos = self.rect.x + self.level.world_shift
         
         #Right Movements
-        if self.direction == "R":
             
-            if self.isIdle and self.right and not self.isJump:
-                self.image = self.idle_frames_R[self.idleCount//5]
-                self.idleCount += 1
+        if self.isIdle and self.right and not self.isJump:
+            self.image = self.idle_frames_R[self.idleCount//5]
+            self.idleCount += 1
+        
+        elif self.right and not self.isJump and not self.isIdle and not self.isAttack and not self.isCrouch and not self.isBow:
+            self.image = self.walking_frames_R[self.walkCount//3] 
+            self.walkCount += 1
             
-            elif self.right and not self.isJump and not self.isIdle and not self.isAttack and not self.isCrouch and not self.isBow:
-                self.image = self.walking_frames_R[self.walkCount//3] 
-                self.walkCount += 1
-                
-            elif self.isAttack and self.right and not self.isJump:
-                self.image = self.attack_frames_R[self.attackCount//2]
-                self.attackCount += 1
+        elif self.isAttack and self.right and not self.isJump:
+            self.image = self.attack_frames_R[self.attackCount//2]
+            self.attackCount += 1
                     
         #Left Movements            
-        else:
             
-            if self.isIdle and self.left and not self.isJump:
-                self.image = self.idle_frames_L[self.idleCount//5] 
-                self.idleCount += 1
-                
-            elif self.left and not self.isJump and not self.isIdle and not self.isAttack and not self.isCrouch and not self.isBow:
-                self.image = self.walking_frames_L[self.walkCount//3]  
-                self.walkCount += 1
+        if self.isIdle and self.left and not self.isJump:
+            self.image = self.idle_frames_L[self.idleCount//5] 
+            self.idleCount += 1
             
+        elif self.left and not self.isJump and not self.isIdle and not self.isAttack and not self.isCrouch and not self.isBow:
+            self.image = self.walking_frames_L[self.walkCount//3]  
+            self.walkCount += 1
         
-            elif self.isAttack and self.left and not self.isJump:
-                self.image = self.attack_frames_L[self.attackCount//2] 
-                self.attackCount += 1
+    
+        elif self.isAttack and self.left and not self.isJump:
+            self.image = self.attack_frames_L[self.attackCount//2] 
+            self.attackCount += 1
         
 
         # See if we hit anything
@@ -444,19 +422,6 @@ class Enemy_Blob(pygame.sprite.Sprite):
             self.rect.y = constants.SCREEN_HEIGHT - self.rect.height
 
     # Player-controlled movement:
-    def go_left(self):
-        """ Called when the user hits the left arrow. """
-        self.change_x = -10
-        self.direction = "L"
-
-    def go_right(self):
-        """ Called when the user hits the right arrow. """
-        self.change_x = 10
-        self.direction = "R"
-
-    def stop(self):
-        """ Called when the user lets off the keyboard. """
-        self.change_x = 0
     
     def Idle(self):
         self.isIdle = True
@@ -470,9 +435,7 @@ class Enemy_Blob(pygame.sprite.Sprite):
         self.right = False
         self.isIdle = False
         self.isAttack = False
-        self.attackCount = 0
-        self.direction = "L"
-        
+        self.attackCount = 0      
             
     def RunRight (self):
         self.change_x = 10
@@ -481,26 +444,25 @@ class Enemy_Blob(pygame.sprite.Sprite):
         self.isIdle = False
         self.isAttack = False
         self.attackCount = 0
-        self.direction = "R"
                     
     def Attack (self):
         self.isAttack = True
         self.isIdle = False
+        
     def Health (self):
         self.health=3
         def Subtract_Health(self):
             self.health = self.health - 1
 #          if self.health <= 0:
+            
 class Enemy_Midget(pygame.sprite.Sprite):
+    
     walking_frames_L = []
     walking_frames_R = []
     idle_frames_L = []
     idle_frames_R = []
     attack_frames_L = []
     attack_frames_R = []
-
-    # What direction is the player facing?
-    direction = "R"
 
     # List of sprites we can bump against
     level = None
@@ -594,35 +556,33 @@ class Enemy_Midget(pygame.sprite.Sprite):
         pos = self.rect.x + self.level.world_shift
         
         #Right Movements
-        if self.direction == "R":
             
-            if self.isIdle and self.right and not self.isJump:
-                self.image = self.idle_frames_R[self.idleCount//5]
-                self.idleCount += 1
+        if self.isIdle and self.right and not self.isJump:
+            self.image = self.idle_frames_R[self.idleCount//5]
+            self.idleCount += 1
+        
+        elif self.right and not self.isJump and not self.isIdle and not self.isAttack and not self.isCrouch and not self.isBow:
+            self.image = self.walking_frames_R[self.walkCount//3] 
+            self.walkCount += 1
             
-            elif self.right and not self.isJump and not self.isIdle and not self.isAttack and not self.isCrouch and not self.isBow:
-                self.image = self.walking_frames_R[self.walkCount//3] 
-                self.walkCount += 1
-                
-            elif self.isAttack and self.right and not self.isJump:
-                self.image = self.attack_frames_R[self.attackCount//2]
-                self.attackCount += 1
+        elif self.isAttack and self.right and not self.isJump:
+            self.image = self.attack_frames_R[self.attackCount//2]
+            self.attackCount += 1
                     
         #Left Movements            
-        else:
             
-            if self.isIdle and self.left and not self.isJump:
-                self.image = self.idle_frames_L[self.idleCount//5] 
-                self.idleCount += 1
-                
-            elif self.left and not self.isJump and not self.isIdle and not self.isAttack and not self.isCrouch and not self.isBow:
-                self.image = self.walking_frames_L[self.walkCount//3]  
-                self.walkCount += 1
+        if self.isIdle and self.left and not self.isJump:
+            self.image = self.idle_frames_L[self.idleCount//5] 
+            self.idleCount += 1
             
+        elif self.left and not self.isJump and not self.isIdle and not self.isAttack and not self.isCrouch and not self.isBow:
+            self.image = self.walking_frames_L[self.walkCount//3]  
+            self.walkCount += 1
         
-            elif self.isAttack and self.left and not self.isJump:
-                self.image = self.attack_frames_L[self.attackCount//2] 
-                self.attackCount += 1
+    
+        elif self.isAttack and self.left and not self.isJump:
+            self.image = self.attack_frames_L[self.attackCount//2] 
+            self.attackCount += 1
         
 
         # See if we hit anything
@@ -668,20 +628,7 @@ class Enemy_Midget(pygame.sprite.Sprite):
             self.rect.y = constants.SCREEN_HEIGHT - self.rect.height
 
     # Player-controlled movement:
-    def go_left(self):
-        """ Called when the user hits the left arrow. """
-        self.change_x = -10
-        self.direction = "L"
 
-    def go_right(self):
-        """ Called when the user hits the right arrow. """
-        self.change_x = 10
-        self.direction = "R"
-
-    def stop(self):
-        """ Called when the user lets off the keyboard. """
-        self.change_x = 0
-    
     def Idle(self):
         self.isIdle = True
         self.walkCount = 0
@@ -695,9 +642,7 @@ class Enemy_Midget(pygame.sprite.Sprite):
         self.isIdle = False
         self.isAttack = False
         self.attackCount = 0
-        self.direction = "L"
-        
-            
+              
     def RunRight (self):
         self.change_x = 10
         self.left = False
@@ -705,11 +650,11 @@ class Enemy_Midget(pygame.sprite.Sprite):
         self.isIdle = False
         self.isAttack = False
         self.attackCount = 0
-        self.direction = "R"
                     
     def Attack (self):
         self.isAttack = True
         self.isIdle = False
+        
     def Health (self):
         self.health=3
         def Subtract_Health(self):
