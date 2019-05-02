@@ -87,17 +87,17 @@ class Player(pygame.sprite.Sprite):
         for i in walkLeft:    
             self.walking_frames_L.append(i)
             
-        jumpRight = [pygame.image.load('images/character_sprites/adventurer-jump-00.png'), 
-                     pygame.image.load('images/character_sprites/adventurer-jump-01.png'), 
-                     pygame.image.load('images/character_sprites/adventurer-jump-02.png'), 
-                     pygame.image.load('images/character_sprites/adventurer-jump-03.png')]
+        jumpRight = [pygame.image.load('images/character_sprites/adventurer-smrslt-00.png'), 
+                     pygame.image.load('images/character_sprites/adventurer-smrslt-01.png'), 
+                     pygame.image.load('images/character_sprites/adventurer-smrslt-02.png'), 
+                     pygame.image.load('images/character_sprites/adventurer-smrslt-03.png')]
         for i in jumpRight:
             self.jump_frames_R.append(i)
         
-        jumpLeft = [pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-jump-00.png'),True, False),
-                    pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-jump-01.png'),True, False),
-                    pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-jump-02.png'),True, False),
-                    pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-jump-03.png'),True, False)]
+        jumpLeft = [pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-smrslt-00.png'),True, False),
+                    pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-smrslt-01.png'),True, False),
+                    pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-smrslt-02.png'),True, False),
+                    pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-smrslt-03.png'),True, False)]
         for i in jumpLeft:
             self.jump_frames_L.append(i)
 
@@ -366,6 +366,9 @@ class Player(pygame.sprite.Sprite):
         if self.rect.y >= constants.SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
             self.change_y = 0
             self.rect.y = constants.SCREEN_HEIGHT - self.rect.height
+            self.isJump = False
+            self.isAttack = False
+            self.isIdle = True
 
     def jump(self):
         """ Called when user hits 'jump' button. """
@@ -376,10 +379,23 @@ class Player(pygame.sprite.Sprite):
         self.rect.y += 2
         platform_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
         self.rect.y -= 2
-
         # If it is ok to jump, set our speed upwards
         if len(platform_hit_list) > 0 or self.rect.bottom >= constants.SCREEN_HEIGHT:
             self.change_y = -20
+            self.isJump = False
+            self.isAttack = False
+            self.isIdle = True
+
+
+        self.isJump=True
+        self.isIdle = False
+        self.isAttack = False
+        self.isCrouch = False
+        self.isBow = False
+        self.bowCount = 0
+        self.walkCount = 0
+        self.attackCount = 0
+        self.crouchCount = 0
 
     def Idle(self):
         self.change_x = 0

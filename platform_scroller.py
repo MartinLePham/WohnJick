@@ -115,7 +115,12 @@ def main():
                     player.Idle()
                 if event.key == pygame.K_RIGHT and player.change_x > 0:
                     player.Idle()
-
+                if event.key == pygame.K_f:
+                    player.Idle()
+                if event.key == pygame.K_r:
+                    player.Idle()
+                if event.key == pygame.K_DOWN:
+                    player.Idle()
         # Update the player.
         active_sprite_list.update(screen)
 
