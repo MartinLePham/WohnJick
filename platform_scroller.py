@@ -36,7 +36,7 @@ def main():
     pygame.init()
 
     # Set the height and width of the screen
-    size = [1600, constants.SCREEN_HEIGHT]
+    size = [1400, constants.SCREEN_HEIGHT]
     screen = pygame.display.set_mode(size)
 
     pygame.display.set_caption("Platformer with sprite sheets")
@@ -121,6 +121,7 @@ def main():
                     player.Idle()
                 if event.key == pygame.K_DOWN:
                     player.Idle()
+
         # Update the player.
         active_sprite_list.update(screen)
 

@@ -248,7 +248,8 @@ class Player(pygame.sprite.Sprite):
         if self.bowCount +1> 27:
             self.bowCount = 0
             self.ammo -= 1
-        
+            
+            
         self.rect.x += self.change_x
         
         #Right Movements
@@ -264,7 +265,8 @@ class Player(pygame.sprite.Sprite):
         elif self.isJump and self.right and not self.isAttack:
             self.image = self.jump_frames_R[self.jumpCount//3] 
             self.jumpCount +=1
-        
+
+
         elif self.isJump and self.right and self.isAttack:
             self.image = self.air_attack_frames_R[self.airAttackCount//3] 
             self.airAttackCount +=1
@@ -297,11 +299,13 @@ class Player(pygame.sprite.Sprite):
         elif self.isJump and self.left and not self.isAttack:
             self.image = self.jump_frames_L[self.jumpCount//3] 
             self.jumpCount +=1
+
     
         elif self.isJump and self.left and self.isAttack:
             self.image = self.air_attack_frames_L[self.airAttackCount//3] 
             self.airAttackCount +=1
-    
+
+            
         elif self.isAttack and self.left and not self.isJump:
             self.image = self.attack_frames_L[self.attackCount//2] 
             self.attackCount += 1
@@ -339,6 +343,7 @@ class Player(pygame.sprite.Sprite):
             # Reset our position based on the top/bottom of the object.
             if self.change_y > 0:
                 self.rect.bottom = block.rect.top
+                self.isJump = False
             elif self.change_y < 0:
                 self.rect.top = block.rect.bottom
 
@@ -361,14 +366,14 @@ class Player(pygame.sprite.Sprite):
             self.change_y = 1
         else:
             self.change_y += .35
+        
 
         # See if we are on the ground.
         if self.rect.y >= constants.SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
             self.change_y = 0
             self.rect.y = constants.SCREEN_HEIGHT - self.rect.height
             self.isJump = False
-            self.isAttack = False
-            self.isIdle = True
+
 
     def jump(self):
         """ Called when user hits 'jump' button. """
@@ -380,14 +385,10 @@ class Player(pygame.sprite.Sprite):
         platform_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
         self.rect.y -= 2
         # If it is ok to jump, set our speed upwards
-        if len(platform_hit_list) > 0 or self.rect.bottom >= constants.SCREEN_HEIGHT:
+        if len(platform_hit_list) > 0 or self.rect.bottom >= constants.SCREEN_HEIGHT:            
             self.change_y = -20
-            self.isJump = False
-            self.isAttack = False
-            self.isIdle = True
+            self.isJump = True
 
-
-        self.isJump=True
         self.isIdle = False
         self.isAttack = False
         self.isCrouch = False
@@ -403,6 +404,7 @@ class Player(pygame.sprite.Sprite):
         self.walkCount = 0
         self.isAttack = False
         self.isBow = False
+        #self.isJump = False
         self.bowCount = 0
         self.attackCount = 0
         self.airAttackCount = 0
