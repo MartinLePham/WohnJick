@@ -2,6 +2,8 @@ import pygame
 
 import constants
 import platforms
+import Enemyspotted
+import random
 
 class Level():
     """ This is a generic super-class used to define a level.
@@ -12,7 +14,7 @@ class Level():
     # lists as needed for your game. """
     platform_list = None
     enemy_list = None
-
+    
     # Background image
     background = []
 
@@ -27,10 +29,14 @@ class Level():
         self.player = player
 
     # Update everythign on this level
-    def update(self):
+    def update(self,screen):
         """ Update everything in this level."""
         self.platform_list.update()
-        self.enemy_list.update()
+        
+        for enemy in self.enemy_list:
+            if enemy.Health() <= 0:
+                self.enemy_list.remove(enemy)
+        self.enemy_list.update(self.platform_list)       
 
     def draw(self, screen):
         """ Draw everything on this level. """
@@ -58,14 +64,16 @@ class Level():
 
         for enemy in self.enemy_list:
             enemy.rect.x += shift_x
+            
 
 # Create platforms for the level
 class Level_01(Level):
     """ Definition for level 1. """
-
+    
     def __init__(self, player):
         """ Create level 1. """
-
+        
+        
         # Call the parent constructor
         Level.__init__(self, player)
         
@@ -83,8 +91,7 @@ class Level_01(Level):
                   [platforms.GRASS_CLIFF_LEFT, 940, 500],
                   [platforms.GRASS_CLIFF_RIGHT, 1400, 500],
                   #Top Right Platform
-#                  [platforms.GRASS_FLOOR_THICK, 0, 730]
-                  
+#                  [platforms.GRASS_FLOOR_THICK, 0, 730]    
                   ]
         #Bottom
         for x in range(0, constants.SCREEN_WIDTH, 32):
@@ -120,15 +127,10 @@ class Level_01(Level):
         for x in range(1600, constants.SCREEN_WIDTH, 48):
             level.append([platforms.STONE_PLATFORM_LONG, x, 400])
         
-
-        #Left and Rights Walls
-# =============================================================================
-#         for y in range(0, constants.SCREEN_HEIGHT, 70):
-#             level.append([platforms.GRASS_FLOOR_SKINNY, 0, y])
-#             level.append([platforms.GRASS_FLOOR_SKINNY, 2100, y])
-#             level.append([platforms.GRASS_FLOOR_SKINNY, 1300, y])
-# =============================================================================
-
+        #Left and Right Map Boundary
+        for y in range(0, constants.SCREEN_HEIGHT, 48):
+            level.append([platforms.STONE_CLIFF_FILL, -16, y])
+            level.append([platforms.STONE_CLIFF_FILL, constants.SCREEN_WIDTH + 16, y])
 
         # Go through the array above and add platforms
         for platform in level:
@@ -171,6 +173,63 @@ class Level_01(Level):
         block.player = self.player
         block.level = self
         self.platform_list.add(block)
+
+        #Enemies
+        enemy = Enemyspotted.Enemy_Bandit(1000, 600)
+        enemy.player = self.player
+        enemy.level = self
+        self.enemy_list.add(enemy)
+        
+        
+# =============================================================================
+#         enemy.rect.x = 1400 ####WHY DOES BLOB SPAWN
+#         enemy.rect.y = 600
+#         self.enemy_list.add(enemy)
+# =============================================================================
+        
+        
+        #Spawn Enemies
+        Platform_Areas = []
+        Bottom_Left_Area = [[0, 1028], 650, 6] #[x bounds], [y location], [number of max type of enemies]
+        Platform_Areas.append(Bottom_Left_Area)
+        
+        number = 0
+        for area in Platform_Areas:
+            while number < 4:
+                x = random.randint(area[0][0], area[0][1])
+                y = area[1]       
+                enemy = Enemyspotted.Enemy_Bandit(x, y)
+                enemy.player = self.player
+                enemy.level = self
+                self.enemy_list.add(enemy)
+                number += 1
+        
+# =============================================================================
+#         level_enemies = []
+#         max_enemies = 10
+#         enemies_spawned = 0    
+#         while enemies_spawned < max_enemies + 1:
+#             for area in Platform_Areas: 
+#                 bandit_spawned = 0
+#                 blob_spawned = 0
+#                 while bandit_spawned < random.randint(0, area[2] + 1):
+#                     bandit.rect.x = random.randint(area[0][0], area[0][1])
+#                     bandit.rect.y = area[1]
+#                     level_enemies.append(bandit)
+#                     bandit_spawned += 1
+#                     enemies_spawned += 1
+# =============================================================================
+# =============================================================================
+#                 enemies_left = area[2] - bandit_spawned
+#                 if enemies_left < area[2]:
+#                     while blob_spawned < enemies_left:
+#                         blob.rect.x = random.randint(area[0][0], area[0][1])
+#                         blob.rect.y = area[1]
+#                         self.enemy_list.add(blob)
+# =============================================================================
+                        
+#        for enemy in level_enemies:
+            
 
 
 # Create platforms for the level
