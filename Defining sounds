@@ -1,0 +1,8 @@
+import pygame
+#set background music
+background_sound=pygame.mixer.music.load('INSERT SONG HERE')
+#set Sound Effects
+sword_sound=pygame.mixer.Sound('INSERT EFFECT HERE')
+jump_sound=pygame.mixer.Sound('INSERT EFFECT HERE')
+i_got_hit_sound=pygame.mixer.Sound('INSERT EFFECT HERE')
+Enemy_got_hit_sound=pygame.mixer.Sound('INSERT EFFECT HERE')
