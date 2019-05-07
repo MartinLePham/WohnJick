@@ -37,7 +37,8 @@ class Player(pygame.sprite.Sprite):
     crouch_frames_R = []
     arrow_frames_L = []
     arrow_frames_R = []
-
+    death_frames_L = []
+    death_frames_R = []
     
         
     # What direction is the player facing?
@@ -68,6 +69,7 @@ class Player(pygame.sprite.Sprite):
         self.jumpCount = 0
         self.attackCount = 0
         self.airAttackCount = 0
+        self.deathCount = 0
         self.jumpCount = 10
         self.bowCount = 0
         self.ammo = 10
@@ -210,6 +212,29 @@ class Player(pygame.sprite.Sprite):
                       pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-crouch-03.png'),True, False)]
         for i in crouchLeft:
             self.crouch_frames_L.append(i)
+        
+        death = [pygame.image.load('images/character_sprites/adventurer-die-00.png'), 
+                    pygame.image.load('images/character_sprites/adventurer-die-01.png'), 
+                    pygame.image.load('images/character_sprites/adventurer-die-02.png'), 
+                    pygame.image.load('images/character_sprites/adventurer-die-03.png'), 
+                    pygame.image.load('images/character_sprites/adventurer-die-04.png'), 
+                    pygame.image.load('images/character_sprites/adventurer-die-05.png'),
+                    pygame.image.load('images/character_sprites/adventurer-die-06.png')]
+        
+        for i in death:
+            self.death_frames_R.append(i)
+            
+        deathLeft = [pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-die-00.png'),True, False),
+                        pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-die-01.png'),True, False),
+                        pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-die-02.png'),True, False),
+                        pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-die-03.png'),True, False),
+                        pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-die-04.png'),True, False), 
+                        pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-die-05.png'),True, False),
+                        pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-die-06.png'),True, False)]
+         
+        for i in deathLeft:
+            self.death_frames_L.append(i)               
+        
         
         arrow = [pygame.transform.scale(pygame.transform.rotate(pygame.image.load('images/items/arrow.png'), 90), (30,5))]
         for i in arrow:
@@ -553,7 +578,15 @@ class Player(pygame.sprite.Sprite):
         if self.health <= 0:
             self.change_x = 0
             self.change_y = 0
-            #-------INSERT DEATH ANIMATION-------------
+            if self.right:
+                self.image = self.death_frames_R[self.deathCount//5]
+                if self.deathCount <=30:
+                    self.deathCount +=1                
+            elif self.left:
+                self.image = self.walking_frames_R[self.deathCount//5] 
+                if self.deathCount <= 30:
+                    self.deathCount +=1
+            
 #class Projectile (object):
 #    def __init__(self,x,y,radius,width,height,facing):
 #        self.x = x
