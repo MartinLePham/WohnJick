@@ -143,9 +143,7 @@ class Enemy_Bandit(pygame.sprite.Sprite):
          
         elif self.isAttack and self.right:
             self.image = self.attack_frames_R[self.attackCount//2]
-#            player_hit_list = pygame.sprite.spritecollide(self, self.player, False)
-#            for player in player_hit_list:
-            if self.image == self.attack_frames_R[2]:
+            if self.image == self.attack_frames_R[2] or self.attack_frames_R[5]:
                 if pygame.sprite.collide_rect(self, self.player):
                     self.player.subtractHealth()
 #                    print('HP Lost')
@@ -163,7 +161,7 @@ class Enemy_Bandit(pygame.sprite.Sprite):
             
         elif self.isAttack and self.left:
             self.image = self.attack_frames_L[self.attackCount//2]
-            if self.image == self.attack_frames_L[2]:
+            if self.image == self.attack_frames_L[2] or self.attack_frames_L[5]:
                 if pygame.sprite.collide_rect(self.player, self):
                     self.player.subtractHealth()  
 #                    print('HP Lost')
@@ -213,7 +211,14 @@ class Enemy_Bandit(pygame.sprite.Sprite):
         random_direction = numpy.random.choice(directions, p=chances)
         hit = pygame.sprite.collide_rect(self, self.player)
         if hit:
-            self.Attack()
+            if self.player.rect.x > self.rect.x:
+                self.left == False
+                self.right == True
+                self.Attack()
+            elif self.player.rect.x < self.rect.x:
+                self.right == False
+                self.left == True
+                self.Attack()
         else:
             if random_movement == 'Stop':
                 self.Idle()

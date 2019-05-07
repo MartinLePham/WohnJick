@@ -46,6 +46,7 @@ class Player(pygame.sprite.Sprite):
 
     # List of sprites we can bump against
     level = None
+    enemies = None
 
     # -- Methods
     def __init__(self):
@@ -61,9 +62,9 @@ class Player(pygame.sprite.Sprite):
         self.jpleft = False
         self.jpright = False
         self.isAttack = False
-        self.isJump = False
         self.isCrouch = False
         self.isBow= False
+        self.isClimb = False
         self.crouchCount = 0
         self.walkCount = 0
         self.idleCount = 0
@@ -73,6 +74,7 @@ class Player(pygame.sprite.Sprite):
         self.deathCount = 0
         self.jumpCount = 10
         self.bowCount = 0
+        self.climbCount = 0
         self.ammo = 10
         self.health = 40
         
@@ -285,7 +287,10 @@ class Player(pygame.sprite.Sprite):
         if self.bowCount +1> 27:
             self.bowCount = 0
             self.ammo -= 1
-            pygame.mixer.Sound.play(sound_library.bow_sound) 
+            pygame.mixer.Sound.play(sound_library.bow_sound)
+            
+        if self.climbCount + 1 > 12:
+            self.climbCount = 0
             
         self.rect.x += self.change_x
         
@@ -401,6 +406,10 @@ class Player(pygame.sprite.Sprite):
                 self.bowCount += 1
             else:
                 self.image = self.idle_frames_L[self.bowCount//3] 
+                
+        if self.isClimb and not self.isJump and not self.isIdle and not self.isAttack and not self.isCrouch and not self.isBow:
+            self.image = self.climb_frames[self.climbCount//3]
+            self.climbCount =+ 1
         
 
         # See if we hit anything
@@ -433,11 +442,10 @@ class Player(pygame.sprite.Sprite):
 
             if isinstance(block, MovingPlatform):
                 self.rect.x += block.change_x
-                
+        
 # =============================================================================
-#         #Check to see if enemy hits us
-#         enemy_hit_list = pygame.sprite.spritecollide(self, self.level.enemy_list, False)
-#         for enemy in enemy_hit_list:
+#         rope_hit_list = pygame.sprite.spritecollide(self, self.level.rope_list, False)
+#         for rope in rope_hit_list:
 #             if 
 # =============================================================================
         
@@ -543,6 +551,19 @@ class Player(pygame.sprite.Sprite):
         self.airAttackCount = 0
         self.crouchCount = 0
         
+    def Climb(self):
+        self.isJump = False
+        self.isIdle = False
+        self.isAttack = False
+        self.isCrouch = False
+        self.isBow = False
+        self.isClimb = True
+        self.bowCount = 0
+        self.walkCount = 0
+        self.attackCount = 0
+        self.airAttackCount = 0
+        self.crouchCount = 0        
+        
     def Attack (self):
         self.isAttack = True
         self.isIdle = False
@@ -589,11 +610,11 @@ class Player(pygame.sprite.Sprite):
             pygame.mixer.Sound.play(sound_library.death_sound)
             if self.right:
                 self.image = self.death_frames_R[self.deathCount//5]
-                if self.deathCount <30:
+                if self.deathCount <34:
                     self.deathCount +=1                
             elif self.left:
-                self.image = self.walking_frames_R[self.deathCount//5] 
-                if self.deathCount < 30:
+                self.image = self.death_frames_L[self.deathCount//5] 
+                if self.deathCount < 34:
                     self.deathCount +=1
             
 #class Projectile (object):

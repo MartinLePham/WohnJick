@@ -13,6 +13,7 @@ class Level():
     # Lists of sprites used in all levels. Add or remove
     # lists as needed for your game. """
     platform_list = None
+    rope_list = None
     enemy_list = None
     
     # Background image
@@ -26,18 +27,18 @@ class Level():
             collide with the player. """
         self.platform_list = pygame.sprite.Group()
         self.enemy_list = pygame.sprite.Group()
+        self.rope_list = pygame.sprite.Group()
         self.player = player
 
     # Update everythign on this level
     def update(self,screen):
         """ Update everything in this level."""
         self.platform_list.update()
+        self.rope_list.update()
         
         for enemy in self.enemy_list:
             if enemy.Health() <= 0:
                 self.enemy_list.remove(enemy)
-        if self.player.Health() <= 0:
-            self.player = None
         self.enemy_list.update(self.platform_list)       
 
     def draw(self, screen):
@@ -52,6 +53,7 @@ class Level():
 
         # Draw all the sprite lists that we have
         self.platform_list.draw(screen)
+        self.rope_list.draw(screen)
         self.enemy_list.draw(screen)
 
     def shift_world(self, shift_x):
@@ -63,9 +65,13 @@ class Level():
         # Go through all the sprite lists and shift
         for platform in self.platform_list:
             platform.rect.x += shift_x
+            
+        for rope in self.rope_list:
+            rope.rect.x += shift_x
 
         for enemy in self.enemy_list:
             enemy.rect.x += shift_x
+            
             
 
 # Create platforms for the level
@@ -93,7 +99,9 @@ class Level_01(Level):
                   [platforms.GRASS_CLIFF_LEFT, 940, 500],
                   [platforms.GRASS_CLIFF_RIGHT, 1400, 500],
                   #Top Right Platform
-#                  [platforms.GRASS_FLOOR_THICK, 0, 730]    
+#                  [platforms.GRASS_FLOOR_THICK, 0, 730]
+                  
+#                  [platforms.ROPE, x, y]
                   ]
         #Bottom
         for x in range(0, constants.SCREEN_WIDTH, 32):
@@ -143,6 +151,22 @@ class Level_01(Level):
             self.platform_list.add(block)
 
         # Add a custom moving platform
+        
+        #Ropes
+# =============================================================================
+#         level_rope = []
+#         for y in range (280, 700, 23):
+#             level_rope.append([platforms.ROPE, 550, y])
+#             
+#         for string in level_rope:
+#             rope = platforms.Rope(string[0])
+#             rope.rect.x = string[1]
+#             rope.rect.y = string[2]
+#             rope.player = self.player
+#             self.rope_list.add(rope)
+# =============================================================================
+
+        
         #Left Floating Platform
         block = platforms.MovingPlatform(platforms.FLOATING_STONE)
         block.rect.x = 550
@@ -222,8 +246,6 @@ class Level_01(Level):
 #                         blob.rect.y = area[1]
 #                         self.enemy_list.add(blob)
 # =============================================================================
-                        
-#        for enemy in level_enemies:
             
 
 

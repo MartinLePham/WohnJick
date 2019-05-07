@@ -39,6 +39,7 @@ BRIDGE_RIGHT          = (688, 188, 41, 30)
 FLOATING_GRASS        = (50, 28, 58, 65)
 FLOATING_STONE        = (48, 121, 48, 39)
 
+ROPE                  = (1, 0, 6, 23)
 
 class Platform(pygame.sprite.Sprite):
     """ Platform the user can jump on """
@@ -58,7 +59,38 @@ class Platform(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
 
-
+class Rope(pygame.sprite.Sprite):
+    """ Ropes to climb """
+    
+    player = None
+    
+    def __init__(self, sprite_sheet_data):
+        
+        pygame.sprite.Sprite.__init__(self)
+        sprite_sheet = SpriteSheet('images/rope_sprites/rope.png')
+        
+        self.image = sprite_sheet.get_image(sprite_sheet_data[0],
+                                            sprite_sheet_data[1],
+                                            sprite_sheet_data[2],
+                                            sprite_sheet_data[3])
+        self.rect = self.image.get_rect()
+    
+# =============================================================================
+#     def update(self):
+#         
+#         hit = pygame.sprite.collide_rect(self, self.player)
+#         if hit:
+#             for event in pygame.event.get():
+#                 if event.type == pygame.KEYDOWN:
+#                     if event.key == pygame.K_UP:
+#                         self.player.Climb()
+#                         self.player.rect.right = self.rect.left
+#                         self.player.change_y = 5
+#                     elif event.key == pygame.k_DOWN:
+#                         self.player.rect.right = self.rect.left
+#                         self.player.change_y = -5
+# =============================================================================
+    
 class MovingPlatform(Platform):
     """ This is a fancier platform that can actually move. """
     change_x = 0
