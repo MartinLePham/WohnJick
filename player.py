@@ -8,6 +8,7 @@ import constants
 
 from platforms import MovingPlatform
 from spritesheet_functions import SpriteSheet
+import sound_library
 
 class Player(pygame.sprite.Sprite):
     """ This class represents the bar at the bottom that the player
@@ -37,11 +38,12 @@ class Player(pygame.sprite.Sprite):
     arrow_frames_L = []
     arrow_frames_R = []
 
+    
+        
     # What direction is the player facing?
 
     # List of sprites we can bump against
     level = None
-    enemies = None
 
     # -- Methods
     def __init__(self):
@@ -69,7 +71,6 @@ class Player(pygame.sprite.Sprite):
         self.jumpCount = 10
         self.bowCount = 0
         self.ammo = 10
-        
         self.health = 40
         
         walkRight = [pygame.image.load('images/character_sprites/adventurer-run-00.png'), 
@@ -90,17 +91,17 @@ class Player(pygame.sprite.Sprite):
         for i in walkLeft:    
             self.walking_frames_L.append(i)
             
-        jumpRight = [pygame.image.load('images/character_sprites/adventurer-jump-00.png'), 
-                     pygame.image.load('images/character_sprites/adventurer-jump-01.png'), 
-                     pygame.image.load('images/character_sprites/adventurer-jump-02.png'), 
-                     pygame.image.load('images/character_sprites/adventurer-jump-03.png')]
+        jumpRight = [pygame.image.load('images/character_sprites/adventurer-smrslt-00.png'), 
+                     pygame.image.load('images/character_sprites/adventurer-smrslt-01.png'), 
+                     pygame.image.load('images/character_sprites/adventurer-smrslt-02.png'), 
+                     pygame.image.load('images/character_sprites/adventurer-smrslt-03.png')]
         for i in jumpRight:
             self.jump_frames_R.append(i)
         
-        jumpLeft = [pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-jump-00.png'),True, False),
-                    pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-jump-01.png'),True, False),
-                    pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-jump-02.png'),True, False),
-                    pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-jump-03.png'),True, False)]
+        jumpLeft = [pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-smrslt-00.png'),True, False),
+                    pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-smrslt-01.png'),True, False),
+                    pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-smrslt-02.png'),True, False),
+                    pygame.transform.flip(pygame.image.load('images/character_sprites/adventurer-smrslt-03.png'),True, False)]
         for i in jumpLeft:
             self.jump_frames_L.append(i)
 
@@ -250,9 +251,12 @@ class Player(pygame.sprite.Sprite):
         
         if self.bowCount +1> 27:
             self.bowCount = 0
-            self.ammo -= 1  
+            self.ammo -= 1
+            pygame.mixer.Sound.play(sound_library.bow_sound) 
+            
+        self.rect.x += self.change_x
         
-        """Right Movements"""
+        #Right Movements
             
         if self.isIdle and self.right and not self.isJump:
             self.image = self.idle_frames_R[self.idleCount//5]
@@ -260,24 +264,41 @@ class Player(pygame.sprite.Sprite):
         
         elif self.right and not self.isJump and not self.isIdle and not self.isAttack and not self.isCrouch and not self.isBow:
             self.image = self.walking_frames_R[self.walkCount//3] 
+            if self.walkCount == 1  or self.walkCount == 7  or self.walkCount == 13:
+                pygame.mixer.Sound.play(sound_library.walk_sound) 
             self.walkCount += 1
             
         elif self.isJump and self.right and not self.isAttack:
             self.image = self.jump_frames_R[self.jumpCount//3] 
             self.jumpCount +=1
-        
+
+
         elif self.isJump and self.right and self.isAttack:
-            self.image = self.air_attack_frames_R[self.airAttackCount//3] 
+            self.image = self.air_attack_frames_R[self.airAttackCount//3]
+            if self.airAttackCount == 6:
+               pygame.mixer.Sound.play(sound_library.sword_sound_2) 
+            enemy_hit_list = pygame.sprite.spritecollide(self, self.level.enemy_list, False)
+            for enemy in enemy_hit_list:
+                if self.image == self.air_attack_frames_R[2]:
+                    if pygame.sprite.collide_rect(self, enemy):
+                        enemy.subtractHealth()
+                        pygame.mixer.Sound.play(sound_library.Enemy_got_hit_sound)
+#                        sound_library.Enemy_got_hit_sound.play()
             self.airAttackCount +=1
             
         elif self.isAttack and self.right and not self.isJump:
             self.image = self.attack_frames_R[self.attackCount//2]
+            if self.attackCount == 16:
+               pygame.mixer.Sound.play(sound_library.sword_sound_2)
+            if self.attackCount == 4 or self.attackCount == 26:
+               pygame.mixer.Sound.play(sound_library.sword_sound_1)
             enemy_hit_list = pygame.sprite.spritecollide(self, self.level.enemy_list, False)
             for enemy in enemy_hit_list:
                 if self.image == self.attack_frames_R[2] or self.attack_frames_R[8] or self.attack_frames_R[13]:
                     if pygame.sprite.collide_rect(self, enemy):
                         enemy.subtractHealth()
-                        #Possible Knockback Mechanic
+                        pygame.mixer.Sound.play(sound_library.Enemy_got_hit_sound)
+#                        sound_library.Enemy_got_hit_sound.play()
             self.attackCount += 1
             
         elif self.isCrouch and self.right and not self.isJump and not self.isIdle and not self.isAttack:
@@ -291,34 +312,52 @@ class Player(pygame.sprite.Sprite):
             else:
                 self.image = self.idle_frames_R[self.bowCount//3] 
                 
-        """Left Movements"""            
+        #Left Movements            
         
         if self.isIdle and self.left and not self.isJump:
             self.image = self.idle_frames_L[self.idleCount//5] 
             self.idleCount += 1
             
         elif self.left and not self.isJump and not self.isIdle and not self.isAttack and not self.isCrouch and not self.isBow:
-            self.image = self.walking_frames_L[self.walkCount//3]  
+            self.image = self.walking_frames_L[self.walkCount//3]
+            if self.walkCount == 1  or self.walkCount == 7  or self.walkCount == 13:
+                pygame.mixer.Sound.play(sound_library.walk_sound) 
             self.walkCount += 1
         
         elif self.isJump and self.left and not self.isAttack:
             self.image = self.jump_frames_L[self.jumpCount//3] 
             self.jumpCount +=1
+
     
         elif self.isJump and self.left and self.isAttack:
-            self.image = self.air_attack_frames_L[self.airAttackCount//3] 
+            self.image = self.air_attack_frames_L[self.airAttackCount//3]
+            if self.airAttackCount == 6:
+               pygame.mixer.Sound.play(sound_library.sword_sound_2) 
+            enemy_hit_list = pygame.sprite.spritecollide(self, self.level.enemy_list, False)
+            for enemy in enemy_hit_list:
+                if self.image == self.air_attack_frames_L[2]:
+                    if pygame.sprite.collide_rect(self, enemy):
+                        enemy.subtractHealth()
+                        pygame.mixer.Sound.play(sound_library.Enemy_got_hit_sound)
+#                        sound_library.Enemy_got_hit_sound.play()
             self.airAttackCount +=1
-    
+
+            
         elif self.isAttack and self.left and not self.isJump:
-            self.image = self.attack_frames_L[self.attackCount//2] 
+            self.image = self.attack_frames_L[self.attackCount//2]
+            if self.attackCount == 16:
+               pygame.mixer.Sound.play(sound_library.sword_sound_2)
+            if self.attackCount == 4 or self.attackCount == 26:
+               pygame.mixer.Sound.play(sound_library.sword_sound_1)
             enemy_hit_list = pygame.sprite.spritecollide(self, self.level.enemy_list, False)
             for enemy in enemy_hit_list:
                 if self.image == self.attack_frames_L[2] or self.attack_frames_L[8] or self.attack_frames_L[13]:
-                    if pygame.sprite.collide_rect(enemy, self):
+                    if pygame.sprite.collide_rect(self, enemy):
                         enemy.subtractHealth()
-                        #Possible Knockback Mechanic
-            self.attackCount += 1
-    
+                        pygame.mixer.Sound.play(sound_library.Enemy_got_hit_sound)
+#                        sound_library.Enemy_got_hit_sound.play()
+            self.attackCount += 1            
+            
         elif self.isCrouch and self.left and not self.isJump and not self.isIdle and not self.isAttack:
             self.image = self.crouch_frames_L[self.crouchCount//5] 
             self.crouchCount += 1
@@ -329,9 +368,7 @@ class Player(pygame.sprite.Sprite):
                 self.bowCount += 1
             else:
                 self.image = self.idle_frames_L[self.bowCount//3] 
-                
-                
-        self.rect.x += self.change_x
+        
 
         # See if we hit anything
         block_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
@@ -354,6 +391,7 @@ class Player(pygame.sprite.Sprite):
             # Reset our position based on the top/bottom of the object.
             if self.change_y > 0:
                 self.rect.bottom = block.rect.top
+                self.isJump = False
             elif self.change_y < 0:
                 self.rect.top = block.rect.bottom
 
@@ -362,18 +400,28 @@ class Player(pygame.sprite.Sprite):
 
             if isinstance(block, MovingPlatform):
                 self.rect.x += block.change_x
-                            
+                
+# =============================================================================
+#         #Check to see if enemy hits us
+#         enemy_hit_list = pygame.sprite.spritecollide(self, self.level.enemy_list, False)
+#         for enemy in enemy_hit_list:
+#             if 
+# =============================================================================
+        
     def calc_grav(self):
         """ Calculate effect of gravity. """
         if self.change_y == 0:
             self.change_y = 1
         else:
-            self.change_y += .35
+            self.change_y += 1
+        
 
         # See if we are on the ground.
         if self.rect.y >= constants.SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
             self.change_y = 0
             self.rect.y = constants.SCREEN_HEIGHT - self.rect.height
+            self.isJump = False
+
 
     def jump(self):
         """ Called when user hits 'jump' button. """
@@ -384,20 +432,33 @@ class Player(pygame.sprite.Sprite):
         self.rect.y += 2
         platform_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
         self.rect.y -= 2
-
         # If it is ok to jump, set our speed upwards
-        if len(platform_hit_list) > 0 or self.rect.bottom >= constants.SCREEN_HEIGHT:
-            self.change_y = -15
-
+        if len(platform_hit_list) > 0 or self.rect.bottom >= constants.SCREEN_HEIGHT:            
+            self.change_y = -20
+            self.isJump = True
+            pygame.mixer.Sound.play(sound_library.jump_sound)
+#            sound_library.jump_sound.play()
+            
+        self.isIdle = False
+        self.isAttack = False
+        self.isCrouch = False
+        self.isBow = False
+        self.bowCount = 0
+        self.walkCount = 0
+        self.attackCount = 0
+        self.crouchCount = 0
+        
+        
     def Idle(self):
         self.change_x = 0
         self.isIdle = True
         self.walkCount = 0
         self.isAttack = False
         self.isBow = False
+        #self.isJump = False
         self.bowCount = 0
-#        self.attackCount = 0
-#        self.airAttackCount = 0
+        #self.attackCount = 0
+        self.airAttackCount = 0
         self.jumpCount = 0
     
     def Crouch(self):
@@ -407,9 +468,8 @@ class Player(pygame.sprite.Sprite):
         self.isBow = False
         self.bowCount = 0
         self.walkCount = 0
-        self.attackCount = 0
+        self.AttackCount = 0
         self.airAttackCount = 0
-        self.change_x = 0
         
     def RunLeft(self):
         self.change_x = -10
@@ -450,7 +510,7 @@ class Player(pygame.sprite.Sprite):
         self.airAttackCount = 0
         self.crouchCount = 0
         
-    def Attack(self):
+    def Attack (self):
         self.isAttack = True
         self.isIdle = False
         self.isCrouch = False
@@ -459,16 +519,22 @@ class Player(pygame.sprite.Sprite):
         self.crouchCount = 0
         self.change_x = 0
         
-    def Health(self):
-        return self.health
+#        if self.image == self.air_attack_frames_R[1] or self.attack_frames_R[2] or self.attack_frames_R[8] or self.attack_frames_R[13]:
+#            enemy_hit_list = pygame.sprite.spritecollide(self, self.level.enemy_list, False)
+#            for enemy in enemy_hit_list:
+#                if pygame.sprite.collide_rect(self, enemy):
+#                    enemy.subtractHealth()
+#                    #Possible Knockback Mechanic
+#        
+#        if self.image == self.air_attack_frames_L[1] or self.attack_frames_L[2] or self.attack_frames_L[8] or self.attack_frames_L[13]:
+#            enemy_hit_list = pygame.sprite.spritecollide(self, self.level.enemy_list, False)
+#            for enemy in enemy_hit_list:
+#                if pygame.sprite.collide_rect(enemy, self):
+#                    enemy.subtractHealth()
+#                    #Possible Knockback Mechanic      
         
-    def subtractHealth(self):
-        self.health = max(self.health - 1, 0)
-        if self.health <= 0:
-            self.change_x = 0
-            self.change_y = 0
-            #-------INSERT DEATH ANIMATION-------------
-                    
+            
+        
     def Shoot(self):
         self.isBow = True
         self.isIdle = False
@@ -478,8 +544,16 @@ class Player(pygame.sprite.Sprite):
         self.attackCount = 0
         self.airAttackCount = 0
         self.crouchCount = 0
-        self.change_x = 0
         
+    def Health(self):
+        return self.health
+    
+    def subtractHealth(self):
+        self.health = max(self.health - 1, 0)
+        if self.health <= 0:
+            self.change_x = 0
+            self.change_y = 0
+            #-------INSERT DEATH ANIMATION-------------
 #class Projectile (object):
 #    def __init__(self,x,y,radius,width,height,facing):
 #        self.x = x
