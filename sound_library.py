@@ -17,5 +17,6 @@ i_got_hit_sound=pygame.mixer.Sound('Sounds/link hurt.wav')
 Enemy_got_hit_sound=pygame.mixer.Sound('Sounds/enemy hit.wav')
 bow_sound = pygame.mixer.Sound('Sounds/hammer pound.wav')
 walk_sound = pygame.mixer.Sound('Sounds/boomerang.wav')
+death_sound= pygame.mixer.Sound('Sounds/link dies.wav')
 pygame.mixer.Sound.get_volume(Enemy_got_hit_sound)
 

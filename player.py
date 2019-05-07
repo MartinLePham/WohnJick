@@ -578,6 +578,7 @@ class Player(pygame.sprite.Sprite):
         if self.health <= 0:
             self.change_x = 0
             self.change_y = 0
+            pygame.mixer.Sound.play(sound_library.death_sound)
             if self.right:
                 self.image = self.death_frames_R[self.deathCount//5]
                 if self.deathCount <=30:
