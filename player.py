@@ -39,6 +39,7 @@ class Player(pygame.sprite.Sprite):
     arrow_frames_R = []
     death_frames_L = []
     death_frames_R = []
+    climb_frames = []
     
         
     # What direction is the player facing?
@@ -235,6 +236,13 @@ class Player(pygame.sprite.Sprite):
         for i in deathLeft:
             self.death_frames_L.append(i)               
         
+        climb = [pygame.image.load('images/character_sprites/adventurer-ladder-climb-00.png'), 
+                     pygame.image.load('images/character_sprites/adventurer-ladder-climb-01.png'), 
+                     pygame.image.load('images/character_sprites/adventurer-ladder-climb-02.png'), 
+                     pygame.image.load('images/character_sprites/adventurer-ladder-climb-03.png')]
+        
+        for i in climb:
+            self.climb_frames.append(i)
         
         arrow = [pygame.transform.scale(pygame.transform.rotate(pygame.image.load('images/items/arrow.png'), 90), (30,5))]
         for i in arrow:
@@ -581,11 +589,11 @@ class Player(pygame.sprite.Sprite):
             pygame.mixer.Sound.play(sound_library.death_sound)
             if self.right:
                 self.image = self.death_frames_R[self.deathCount//5]
-                if self.deathCount <=30:
+                if self.deathCount <30:
                     self.deathCount +=1                
             elif self.left:
                 self.image = self.walking_frames_R[self.deathCount//5] 
-                if self.deathCount <= 30:
+                if self.deathCount < 30:
                     self.deathCount +=1
             
 #class Projectile (object):
