@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon May  6 19:06:24 2019
-
-@author: Álvaro
-"""
-
 import pygame
 #set background music
 #background_sound=pygame.mixer.music.load('INSERT SONG HERE')
