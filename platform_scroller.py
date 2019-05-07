@@ -40,13 +40,8 @@ def main():
     active_sprite_list.add(player)
     
 
-    you_died=  pygame.transform.scale(pygame.image.load('images/you_died.jpg'), (1400,constants.SCREEN_HEIGHT))
-    def GameOver():
-        start = time()
-        while time() < start+5:
-            screen.blit(you_died, (0,0))
-        if time() > start+5:
-            pygame.quit()
+    you_died =  pygame.transform.scale(pygame.image.load('images/you_died.jpg'), (1400,constants.SCREEN_HEIGHT))
+
     #Loop until the user clicks the close button.
     done = False
 
@@ -115,8 +110,7 @@ def main():
         if player.rect.x + player.rect.width == constants.SCREEN_WIDTH:
             player.change_x = 0
             
-        if player.Health() <= 0:
-           GameOver() 
+
             
         # If the player gets to the end of the level, go to the next level
 # =============================================================================
@@ -140,7 +134,14 @@ def main():
 
         # Go ahead and update the screen with what we've drawn.
         pygame.display.flip()
-
+        
+        if player.Health() <= 0:
+            if player.deathCount >= 34:
+                start = time()
+                while time() < start+5:
+                    screen.blits(you_died, (0,0))
+                    if time() > start+5:
+                        done = True
     # Be IDLE friendly. If you forget this line, the program will 'hang'
     # on exit.
     pygame.quit()
