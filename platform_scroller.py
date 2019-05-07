@@ -21,9 +21,6 @@ def main():
 
     # Create the player
     player = Player()
-
-    #midget_01 = Enemy_Midget()
-    
     
     # Create all the levels
     level_list = []
@@ -43,7 +40,7 @@ def main():
     active_sprite_list.add(player)
     
 
-    you_died=  pygame.transform.scale(pygame.image.load('images/you_died.jpg'), (1400,SCREEN_HEIGHT))
+    you_died=  pygame.transform.scale(pygame.image.load('images/you_died.jpg'), (1400,constants.SCREEN_HEIGHT))
     def GameOver():
         start = time()
         while time() < start+5:
@@ -62,30 +59,6 @@ def main():
             if event.type == pygame.QUIT: # If user clicked close
                 done = True # Flag that we are done so we exit this loop
 
-# =============================================================================
-#             keys = pygame.key.get_pressed()
-#             if keys[pygame.K_LEFT]:
-#                 player.RunLeft()
-#                 
-#             elif keys[pygame.K_RIGHT]:
-#                 player.RunRight()
-#             
-#             if keys[pygame.K_f]:
-#                 player.Attack()
-#             
-#             elif keys[pygame.K_r]:
-#                 player.Shoot()
-#                 
-#             if keys[pygame.K_SPACE]:
-#                 player.jump()    
-#                 
-#             elif keys[pygame.K_DOWN]:
-#                 player.Crouch()
-#             
-#             else:
-#                 player.stop()
-# =============================================================================
-                
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     player.RunLeft()
