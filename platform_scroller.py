@@ -25,44 +25,57 @@ http://opengameart.org/content/platformer-art-deluxe
 """
 
 import pygame
-
+from time import time
 import constants
 import levels
-
+from Enemyspotted import Enemy_Midget
+from Enemyspotted import Enemy_Bandit
+from Enemyspotted import Enemy_Blob
 from player import Player
-import Enemyspotted
+import sound_library
 
 def main():
     """ Main Program """
+    pygame.mixer.init(44100, -16, 2, 2048)
     pygame.init()
 
     # Set the height and width of the screen
-    size = [1600, constants.SCREEN_HEIGHT]
+    size = [1400, constants.SCREEN_HEIGHT]
     screen = pygame.display.set_mode(size)
 
-    pygame.display.set_caption("Platformer with sprite sheets")
+    pygame.display.set_caption("WohnJick")
 
     # Create the player
     player = Player()
 
+    #midget_01 = Enemy_Midget()
+    
+    
     # Create all the levels
     level_list = []
-    level_list.append(levels.Level_01(player))     
+    level_list.append(levels.Level_01(player))
 #    level_list.append(levels.Level_02(player))
 
     # Set the current level
     current_level_no = 0
     current_level = level_list[current_level_no]
 
-    
+    active_sprite_list = pygame.sprite.Group()
     player.level = current_level
 
+    
     player.rect.x = 800
     player.rect.y = constants.SCREEN_HEIGHT - player.rect.height - 70
+    active_sprite_list.add(player)
     
-    player_list = pygame.sprite.Group()
-    player_list.add(player)
 
+    you_died=  pygame.transform.scale(pygame.image.load('images/you_died.jpg'), (1400,SCREEN_HEIGHT))
+    def GameOver():
+        start = time()
+        while time() < start+5:
+            screen.blit(you_died, (0,0))
+        if time() > start+5:
+            pygame.quit()
     #Loop until the user clicks the close button.
     done = False
 
@@ -74,6 +87,30 @@ def main():
         for event in pygame.event.get(): # User did something
             if event.type == pygame.QUIT: # If user clicked close
                 done = True # Flag that we are done so we exit this loop
+
+# =============================================================================
+#             keys = pygame.key.get_pressed()
+#             if keys[pygame.K_LEFT]:
+#                 player.RunLeft()
+#                 
+#             elif keys[pygame.K_RIGHT]:
+#                 player.RunRight()
+#             
+#             if keys[pygame.K_f]:
+#                 player.Attack()
+#             
+#             elif keys[pygame.K_r]:
+#                 player.Shoot()
+#                 
+#             if keys[pygame.K_SPACE]:
+#                 player.jump()    
+#                 
+#             elif keys[pygame.K_DOWN]:
+#                 player.Crouch()
+#             
+#             else:
+#                 player.stop()
+# =============================================================================
                 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
@@ -100,10 +137,9 @@ def main():
                     player.Idle()
                 if event.key == pygame.K_DOWN:
                     player.Idle()
-         
-    
+
         # Update the player.
-        player_list.update(screen)
+        active_sprite_list.update(screen)
 
         # Update items in the level
         current_level.update(screen)
@@ -131,12 +167,10 @@ def main():
             player.change_x = 0
         if player.rect.x + player.rect.width == constants.SCREEN_WIDTH:
             player.change_x = 0
-        
-        #If Player Dies
-        for player in player_list:
-            if player.Health() <= 0:
-                player_list.remove(player)
-                
+            
+        if player.Health() <= 0:
+           GameOver() 
+            
         # If the player gets to the end of the level, go to the next level
 # =============================================================================
 #         current_position = player.rect.x + current_level.world_shift
@@ -150,7 +184,7 @@ def main():
 
         # ALL CODE TO DRAW SHOULD GO BELOW THIS COMMENT
         current_level.draw(screen)
-        player_list.draw(screen)
+        active_sprite_list.draw(screen)
 
         # ALL CODE TO DRAW SHOULD GO ABOVE THIS COMMENT
 
