@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon May  6 19:06:24 2019
+
+@author: Álvaro
+"""
+
 import pygame
 #set background music
 #background_sound=pygame.mixer.music.load('INSERT SONG HERE')
@@ -11,5 +18,7 @@ Enemy_got_hit_sound=pygame.mixer.Sound('Sounds/enemy hit.wav')
 bow_sound = pygame.mixer.Sound('Sounds/hammer pound.wav')
 walk_sound = pygame.mixer.Sound('Sounds/boomerang.wav')
 death_sound= pygame.mixer.Sound('Sounds/link dies.wav')
+
+pygame.mixer.music.load('Sounds/Hollow_Knight_Mantis_Lords.wav')
 pygame.mixer.Sound.get_volume(Enemy_got_hit_sound)
 
