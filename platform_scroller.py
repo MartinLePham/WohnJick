@@ -35,8 +35,8 @@ def main():
     player.level = current_level
 
     
-    player.rect.x = 1200
-    player.rect.y = 400
+    player.rect.x = 1300
+    player.rect.y = 450
     active_sprite_list.add(player)
     
 
@@ -92,6 +92,7 @@ def main():
             if current_level.world_shift - size[0] >= current_level.level_limit:
                 player.rect.x = 800
                 current_level.shift_world(-diff)
+#                print(current_level.world_shift)
             else:
                 current_level.shift_world(0)
 
@@ -104,11 +105,16 @@ def main():
                 current_level.shift_world(diff)
             else:
                 current_level.world_shift = 0
-        
-        if player.rect.x == 0:
+#        print(player.rect.x)
+        if player.rect.left == 0:
             player.change_x = 0
-        if player.rect.x + player.rect.width == constants.SCREEN_WIDTH:
+            player.rect.left = 0
+#            print('hit left')
+        if player.rect.right == size[0]:
             player.change_x = 0
+            player.rect.right = size[0]
+#            print(constants.SCREEN_WIDTH + current_level.world_shift)
+#            print('hit right')
             
 
             

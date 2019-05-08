@@ -125,7 +125,7 @@ class Enemy_Bandit(pygame.sprite.Sprite):
         """ Move the player. """
         self.calc_grav()
         self.wander()   
-        self.boundaries()
+#        self.boundaries()
             
         if self.walkCount + 1 > 18: # 3 frames per walking frame
             self.walkCount = 0
@@ -184,6 +184,13 @@ class Enemy_Bandit(pygame.sprite.Sprite):
                 # Otherwise if we are moving left, do the opposite.
                 self.rect.left = block.rect.right
 
+        bound_hit_list = pygame.sprite.spritecollide(self, self.level.bound_list, False)
+        for bound in bound_hit_list:
+            if self.change_x > 0:
+                self.rect.right = bound.rect.left
+            elif self.change_x < 0:
+                self.rect.left = bound.rect.right            
+
         # Move up/down
         self.rect.y += self.change_y
 
@@ -202,7 +209,7 @@ class Enemy_Bandit(pygame.sprite.Sprite):
 
             if isinstance(block, MovingPlatform):
                 self.rect.x += block.change_x
-                
+        
             
     def wander(self):
         """Wandering Movement"""
@@ -232,23 +239,25 @@ class Enemy_Bandit(pygame.sprite.Sprite):
                 elif random_direction == 'Right':
                     self.RunRight()
                     
-    def boundaries(self):
 # =============================================================================
-#         if self.rect.x > self.right_bound:
-#             self.change_x = -self.change_x
+#     def boundaries(self):
+#         if self.rect.right >= self.right_bound:
+#             self.change_x = 0
 #             self.rect.right = self.right_bound
-#         elif self.rect.left < self.left_bound:
-#             self.change_x = -self.change_x
+#         if self.rect.left <= self.left_bound:
+#             self.change_x = 0
 #             self.rect.left = self.left_bound
+# # =============================================================================
+# #         if self.change_x > 0:
+# #             if self.rect.x + self.change_x >= self.right_bound - self.rect.width:
+# #                 self.change_x = 0
+# #                 self.rect.x = self.right_bound - self.rect.width
+# #         elif self.change_x < 0:
+# #             if self.rect.left <= self.left_bound:
+# #                 self.change_x = 0
+# #                 
+# # =============================================================================
 # =============================================================================
-        if self.change_x > 0:
-            if self.rect.x + self.change_x >= self.right_bound - self.image.get_width():
-                self.change_x = 0
-                self.rect.x = self.right_bound - self.image.get_width()
-        elif self.change_x < 0:
-            if self.rect.left <= self.left_bound:
-                self.change_x = 0
-                
                     
     def calc_grav(self):
         """ Calculate effect of gravity. """
@@ -424,6 +433,7 @@ class Enemy_Blob(pygame.sprite.Sprite):
         """ Move the player. """
         self.calc_grav()
         self.wander()   
+#        self.boundaries()
             
         
         if self.walkCount + 1 > 18: # 3 frames per walking frame
@@ -484,7 +494,14 @@ class Enemy_Blob(pygame.sprite.Sprite):
             elif self.change_x < 0:
                 # Otherwise if we are moving left, do the opposite.
                 self.rect.left = block.rect.right
-
+                
+        bound_hit_list = pygame.sprite.spritecollide(self, self.level.bound_list, False)
+        for bound in bound_hit_list:
+            if self.change_x > 0:
+                self.rect.right = bound.rect.left
+            elif self.change_x < 0:
+                self.rect.left = bound.rect.right  
+                
         # Move up/down
         self.rect.y += self.change_y
 
@@ -525,7 +542,26 @@ class Enemy_Blob(pygame.sprite.Sprite):
                     self.RunLeft()
                 elif random_direction == 'Right':
                     self.RunRight()
-    
+                    
+# =============================================================================
+#     def boundaries(self):
+#         if self.rect.right + self.change_x == self.right_bound:
+#             self.change_x = 0
+#             self.rect.right = self.right_bound
+#         if self.rect.left == self.left_bound:
+#             self.change_x = 0
+#             self.rect.left = self.left_bound
+# # =============================================================================
+# #         if self.change_x > 0:
+# #             if self.rect.x + self.change_x >= self.right_bound - self.rect.width:
+# #                 self.change_x = 0
+# #                 self.rect.x = self.right_bound - self.rect.width
+# #         elif self.change_x < 0:
+# #             if self.rect.left <= self.left_bound:
+# #                 self.change_x = 0
+# # =============================================================================
+# =============================================================================
+                
     def calc_grav(self):
         """ Calculate effect of gravity. """
         if self.change_y == 0:
@@ -676,7 +712,8 @@ class Enemy_Midget(pygame.sprite.Sprite):
     def update(self, screen):
         """ Move the player. """
         self.calc_grav()
-        self.wander()   
+        self.wander() 
+#        self.boundaries()
             
         
         if self.walkCount + 1 > 18: # 3 frames per walking frame
@@ -738,6 +775,13 @@ class Enemy_Midget(pygame.sprite.Sprite):
                 # Otherwise if we are moving left, do the opposite.
                 self.rect.left = block.rect.right
 
+        bound_hit_list = pygame.sprite.spritecollide(self, self.level.bound_list, False)
+        for bound in bound_hit_list:
+            if self.change_x > 0:
+                self.rect.right = bound.rect.left
+            elif self.change_x < 0:
+                self.rect.left = bound.rect.right  
+                
         # Move up/down
         self.rect.y += self.change_y
 
@@ -756,6 +800,8 @@ class Enemy_Midget(pygame.sprite.Sprite):
 
             if isinstance(block, MovingPlatform):
                 self.rect.x += block.change_x
+                
+#        self.boundaries()
                 
             
     def wander(self):
@@ -778,7 +824,28 @@ class Enemy_Midget(pygame.sprite.Sprite):
                     self.RunLeft()
                 elif random_direction == 'Right':
                     self.RunRight()
-    
+
+# =============================================================================
+#     def boundaries(self):
+#         if self.rect.x > self.right_bound:
+#             self.change_x = 0
+#             self.rect.x = 0
+#         elif self.rect.left < self.left_bound:
+#             self.change_x = -self.change_x
+#             self.rect.left = self.left_bound
+# # =============================================================================
+# #         if self.change_x > 0:
+# #             if self.rect.x + self.change_x >= self.right_bound - self.image.get_width():
+# #                 self.change_x = 0
+# #                 self.rect.x = self.right_bound - self.image.get_width()
+# # =============================================================================
+# # =============================================================================
+# #         if self.change_x < 0:
+# #             if self.rect.x < self.left_bound:
+# #                 self.change_x = 0
+# # =============================================================================
+# =============================================================================
+                
     def calc_grav(self):
         """ Calculate effect of gravity. """
         if self.change_y == 0:

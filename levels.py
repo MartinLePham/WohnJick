@@ -14,6 +14,7 @@ class Level():
     # lists as needed for your game. """
     platform_list = None
     rope_list = None
+    bound_list = None
     enemy_list = None
     
     # Background image
@@ -28,6 +29,7 @@ class Level():
         self.platform_list = pygame.sprite.Group()
         self.enemy_list = pygame.sprite.Group()
         self.rope_list = pygame.sprite.Group()
+        self.bound_list = pygame.sprite.Group()
         self.player = player
 
     # Update everythign on this level
@@ -35,6 +37,7 @@ class Level():
         """ Update everything in this level."""
         self.platform_list.update()
         self.rope_list.update()
+        self.bound_list.update()
         
         for enemy in self.enemy_list:
             if enemy.Health() <= 0:
@@ -54,6 +57,7 @@ class Level():
         # Draw all the sprite lists that we have
         self.platform_list.draw(screen)
         self.rope_list.draw(screen)
+        self.bound_list.draw(screen)
         self.enemy_list.draw(screen)
 
     def shift_world(self, shift_x):
@@ -68,6 +72,9 @@ class Level():
             
         for rope in self.rope_list:
             rope.rect.x += shift_x
+            
+        for bound in self.bound_list:
+            bound.rect.x += shift_x
 
         for enemy in self.enemy_list:
             enemy.rect.x += shift_x
@@ -145,6 +152,7 @@ class Level_01(Level):
         for y in range(0, constants.SCREEN_HEIGHT, 48):
             level.append([platforms.STONE_CLIFF_FILL, -16, y])
             level.append([platforms.STONE_CLIFF_FILL, constants.SCREEN_WIDTH + 16, y])
+        
 
         # Go through the array above and add platforms
         for platform in level:
@@ -169,7 +177,26 @@ class Level_01(Level):
 #             rope.player = self.player
 #             self.rope_list.add(rope)
 # =============================================================================
+        level_bound = []
+        
+        level_bound.append([platforms.BLACK_DOT, 240, 170])
+        level_bound.append([platforms.BLACK_DOT, 400, 210])
+        level_bound.append([platforms.BLACK_DOT, 540, 250])
+        
+        level_bound.append([platforms.BLACK_DOT, 850, 720])
+        level_bound.append([platforms.BLACK_DOT, 1520, 720])
+        
+        level_bound.append([platforms.BLACK_DOT, 1790, 370])
+        level_bound.append([platforms.BLACK_DOT, 1985, 200])
+        level_bound.append([platforms.BLACK_DOT, 2475, 200])
 
+
+        
+        for brick in level_bound:
+            bound = platforms.Platform(brick[0])
+            bound.rect.x = brick[1]
+            bound.rect.y = brick[2]
+            self.bound_list.add(bound)
         
         #Left Floating Platform
         block = platforms.MovingPlatform(platforms.FLOATING_STONE)
@@ -249,11 +276,11 @@ class Level_01(Level):
         Platform_Areas_Top_Left = []
         Platform_Areas_Top_Right = []
         
-        Bottom_Left_Area = [[0, 860], 650, 4] #[x bounds], [y location], [number of max type of enemies]
+        Bottom_Left_Area = [[0, 845], 650, 4] #[x bounds], [y location], [number of max type of enemies]
         Top_Left_Area_1 = [[0, 240], 160, 1]
         Top_Left_Area_2 = [[240, 400], 200, 1]
         Top_Left_Area_3 = [[400, 480], 240, 1]
-        Bottom_Right_Area = [[1520, constants.SCREEN_WIDTH], 650, 4]
+        Bottom_Right_Area = [[1530, constants.SCREEN_WIDTH], 650, 4]
         Right_Middle_Area = [[1800, constants.SCREEN_WIDTH], 370, 4]
         Right_Top_Area = [[2000, 2480], 190, 3]
         
@@ -299,6 +326,7 @@ class Level_01(Level):
                  enemy.player = self.player
                  enemy.level = self
                  self.enemy_list.add(enemy)  
+                 
 # =============================================================================
 #         Platform_Areas = []
 #         Platform_Areas.append(Bottom_Left_Area)
