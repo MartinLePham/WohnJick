@@ -86,7 +86,7 @@ class Level_01(Level):
         Level.__init__(self, player)
         
         self.level_limit = -1*constants.SCREEN_WIDTH
-        self.background = pygame.transform.scale(pygame.image.load('Background.png'), (abs(self.level_limit),constants.SCREEN_HEIGHT))
+        self.background = pygame.transform.scale(pygame.image.load('images/background/Background.png'), (abs(self.level_limit),constants.SCREEN_HEIGHT))
 
         
         self.background.set_colorkey(constants.WHITE)
@@ -116,6 +116,8 @@ class Level_01(Level):
             level.append([platforms.STONE_CLIFF_MIDDLE, x, 280])
         for x in range(0, 400, 16):
             level.append([platforms.STONE_CLIFF_FILL, x, 260])
+        
+
             
         #Middle Platform
         for y in range(602, constants.SCREEN_HEIGHT, 78):
@@ -131,10 +133,12 @@ class Level_01(Level):
             level.append([platforms.STONE_CLIFF_FILL, x, 522])
             level.append([platforms.STONE_CLIFF_FILL, x, 560])
             
+
+            
         #Top Right Platforms
+        for x in range(2000, 2480, 48):
+            level.append([platforms.STONE_PLATFORM_LONG, x, 230])
         for x in range(1800, constants.SCREEN_WIDTH, 48):
-            level.append([platforms.STONE_PLATFORM_LONG, x, 200])
-        for x in range(1600, constants.SCREEN_WIDTH, 48):
             level.append([platforms.STONE_PLATFORM_LONG, x, 400])
         
         #Left and Right Map Boundary
@@ -170,9 +174,9 @@ class Level_01(Level):
         #Left Floating Platform
         block = platforms.MovingPlatform(platforms.FLOATING_STONE)
         block.rect.x = 550
-        block.rect.y = 280
-        block.boundary_top = 280
-        block.boundary_bottom = constants.SCREEN_HEIGHT
+        block.rect.y = 330
+        block.boundary_top = 330
+        block.boundary_bottom = 665
         block.change_y = 1
         block.player = self.player
         block.level = self
@@ -183,7 +187,7 @@ class Level_01(Level):
         block.rect.x = 860
         block.rect.y = 500
         block.boundary_top = 500
-        block.boundary_bottom = constants.SCREEN_HEIGHT
+        block.boundary_bottom = 665
         block.change_y = 1
         block.player = self.player
         block.level = self
@@ -194,34 +198,142 @@ class Level_01(Level):
         block.rect.x = 1460
         block.rect.y = 500
         block.boundary_top = 500
-        block.boundary_bottom = constants.SCREEN_HEIGHT
+        block.boundary_bottom = 665
         block.change_y = 1
         block.player = self.player
         block.level = self
         self.platform_list.add(block)
+        
+        #Right Floating Platform
+        block = platforms.MovingPlatform(platforms.FLOATING_STONE)
+        block.rect.x = 1750
+        block.rect.y = 450
+        block.boundary_top = 450
+        block.boundary_bottom = 665
+        block.change_y = 1
+        block.player = self.player
+        block.level = self
+        self.platform_list.add(block)
+        
+# =============================================================================
+#         #Top Right Left Floating Platform
+#         block = platforms.MovingPlatform(platforms.FLOATING_STONE)
+#         block.rect.x = 1950
+#         block.rect.y = 200
+#         block.boundary_top = 200
+#         block.boundary_bottom = 350
+#         block.change_y = 1
+#         block.player = self.player
+#         block.level = self
+#         self.platform_list.add(block)
+# =============================================================================
 
         #Enemies
-        enemy = Enemyspotted.Enemy_Bandit(1000, 600)
-        enemy.player = self.player
-        enemy.level = self
-        self.enemy_list.add(enemy)
+# =============================================================================
+#         enemy = Enemyspotted.Enemy_Bandit(1000, 600, 940, 1400)
+#         enemy.player = self.player
+#         enemy.level = self
+#         self.enemy_list.add(enemy)
+# =============================================================================
+        
+# =============================================================================
+#         enemy = Enemyspotted.Enemy_Bandit(250, 150, 240, 400)
+#         enemy.player = self.player
+#         enemy.level = self
+#         self.enemy_list.add(enemy)
+# =============================================================================
         
         
         #Spawn Enemies
-        Platform_Areas = []
-        Bottom_Left_Area = [[0, 1028], 650, 6] #[x bounds], [y location], [number of max type of enemies]
-        Platform_Areas.append(Bottom_Left_Area)
+        Platform_Areas_Bottom = []
+        Platform_Areas_Top_Left = []
+        Platform_Areas_Top_Right = []
         
-        number = 0
-        for area in Platform_Areas:
-            while number < 4:
-                x = random.randint(area[0][0], area[0][1])
-                y = area[1]       
-                enemy = Enemyspotted.Enemy_Bandit(x, y)
-                enemy.player = self.player
-                enemy.level = self
-                self.enemy_list.add(enemy)
-                number += 1
+        Bottom_Left_Area = [[0, 860], 650, 4] #[x bounds], [y location], [number of max type of enemies]
+        Top_Left_Area_1 = [[0, 240], 160, 1]
+        Top_Left_Area_2 = [[240, 400], 200, 1]
+        Top_Left_Area_3 = [[400, 480], 240, 1]
+        Bottom_Right_Area = [[1520, constants.SCREEN_WIDTH], 650, 4]
+        Right_Middle_Area = [[1800, constants.SCREEN_WIDTH], 370, 4]
+        Right_Top_Area = [[2000, 2480], 190, 3]
+        
+        Platform_Areas_Bottom.append(Bottom_Left_Area)
+        Platform_Areas_Bottom.append(Bottom_Right_Area)
+        
+        Platform_Areas_Top_Left.append(Top_Left_Area_1)
+        Platform_Areas_Top_Left.append(Top_Left_Area_2)
+        Platform_Areas_Top_Left.append(Top_Left_Area_3)
+        
+        Platform_Areas_Top_Right.append(Right_Middle_Area)
+        Platform_Areas_Top_Right.append(Right_Top_Area)
+        
+        for area in Platform_Areas_Bottom:
+            for _ in range(area[2]):
+                 x = random.randint(area[0][0], area[0][1])
+                 y = area[1]       
+                 left_bound = area[0][0]
+                 right_bound = area[0][1]
+                 enemy = Enemyspotted.Enemy_Bandit(x, y, left_bound, right_bound)
+                 enemy.player = self.player
+                 enemy.level = self
+                 self.enemy_list.add(enemy)
+                 
+        for area in Platform_Areas_Top_Left:
+            for _ in range(area[2]):
+                 x = random.randint(area[0][0], area[0][1])
+                 y = area[1]       
+                 left_bound = area[0][0]
+                 right_bound = area[0][1]
+                 enemy = Enemyspotted.Enemy_Blob(x, y, left_bound, right_bound)
+                 enemy.player = self.player
+                 enemy.level = self
+                 self.enemy_list.add(enemy)  
+                 
+        for area in Platform_Areas_Top_Right:
+            for _ in range(area[2]):
+                 x = random.randint(area[0][0], area[0][1])
+                 y = area[1]       
+                 left_bound = area[0][0]
+                 right_bound = area[0][1]
+                 enemy = Enemyspotted.Enemy_Midget(x, y, left_bound, right_bound)
+                 enemy.player = self.player
+                 enemy.level = self
+                 self.enemy_list.add(enemy)  
+# =============================================================================
+#         Platform_Areas = []
+#         Platform_Areas.append(Bottom_Left_Area)
+#         Platform_Areas.append(Top_Left_Area_1)
+#         Platform_Areas.append(Top_Left_Area_2)
+#         Platform_Areas.append(Top_Left_Area_3)
+#         Platform_Areas.append(Bottom_Right_Area)
+#         Platform_Areas.append(Right_Middle_Area)
+#         Platform_Areas.append(Right_Top_Area)
+# =============================================================================
+
+        
+# =============================================================================
+#         for area in Platform_Areas:
+#             for _ in range(area[2]):
+#                 x = random.randint(area[0][0], area[0][1])
+#                 y = area[1]       
+#                 left_bound = area[0][0]
+#                 right_bound = area[0][1]
+#                 if area[1] == 650:
+#                     enemy = Enemyspotted.Enemy_Bandit(x, y, left_bound, right_bound)
+#                     enemy.player = self.player
+#                     enemy.level = self
+#                     self.enemy_list.add(enemy)
+#                 elif area[1] == 160 or 200 or 240:
+#                     enemy = Enemyspotted.Enemy_Blob(x, y, left_bound, right_bound)
+#                     enemy.player = self.player
+#                     enemy.level = self
+#                     self.enemy_list.add(enemy)
+#                 elif area[1] == 190 or 370:
+#                     enemy = Enemyspotted.Enemy_Midget(x, y, left_bound, right_bound)
+#                     enemy.player = self.player
+#                     enemy.level = self
+#                     self.enemy_list.add(enemy)
+# =============================================================================
         
 # =============================================================================
 #         level_enemies = []

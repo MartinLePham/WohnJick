@@ -16,6 +16,7 @@ class Enemy_Bandit(pygame.sprite.Sprite):
     change_x = 0
     change_y = 0
 
+
     # This holds all the images for the animated walk left/right
     # of our player
     walking_frames_L = []
@@ -32,7 +33,7 @@ class Enemy_Bandit(pygame.sprite.Sprite):
     
 
     # -- Methods
-    def __init__(self, x, y):
+    def __init__(self, x, y, left_bound, right_bound):
         """ Constructor function """
 
         # Call the parent's constructor
@@ -45,6 +46,9 @@ class Enemy_Bandit(pygame.sprite.Sprite):
         self.walkCount = 0
         self.idleCount = 0
         self.attackCount = 0
+        
+        self.left_bound = left_bound
+        self.right_bound = right_bound
         
         self.health = 40
         
@@ -121,8 +125,8 @@ class Enemy_Bandit(pygame.sprite.Sprite):
         """ Move the player. """
         self.calc_grav()
         self.wander()   
+        self.boundaries()
             
-        
         if self.walkCount + 1 > 18: # 3 frames per walking frame
             self.walkCount = 0
             
@@ -227,13 +231,36 @@ class Enemy_Bandit(pygame.sprite.Sprite):
                     self.RunLeft()
                 elif random_direction == 'Right':
                     self.RunRight()
-    
+                    
+    def boundaries(self):
+# =============================================================================
+#         if self.rect.x > self.right_bound:
+#             self.change_x = -self.change_x
+#             self.rect.right = self.right_bound
+#         elif self.rect.left < self.left_bound:
+#             self.change_x = -self.change_x
+#             self.rect.left = self.left_bound
+# =============================================================================
+        if self.change_x > 0:
+            if self.rect.x + self.change_x >= self.right_bound - self.image.get_width():
+                self.change_x = 0
+                self.rect.x = self.right_bound - self.image.get_width()
+        elif self.change_x < 0:
+            if self.rect.left <= self.left_bound:
+                self.change_x = 0
+                
+                    
     def calc_grav(self):
         """ Calculate effect of gravity. """
         if self.change_y == 0:
             self.change_y = 1
         else:
             self.change_y += .35
+        
+# =============================================================================
+#         if self.change_y > 0:
+#             self.change_x = 0
+# =============================================================================
 
         # See if we are on the ground.
         if self.rect.y >= constants.SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
@@ -304,7 +331,7 @@ class Enemy_Blob(pygame.sprite.Sprite):
     
 
     # -- Methods
-    def __init__(self, x, y):
+    def __init__(self, x, y, left_bound, right_bound):
         """ Constructor function """
 
         # Call the parent's constructor
@@ -320,6 +347,8 @@ class Enemy_Blob(pygame.sprite.Sprite):
         
         self.health = 100
         
+        self.left_bound = left_bound
+        self.right_bound = right_bound
         
         walkRight = [pygame.image.load('images/enemy_sprites/Blob_Running_001.png'), 
                      pygame.image.load('images/enemy_sprites/Blob_Running_002.png'), 
@@ -572,7 +601,7 @@ class Enemy_Midget(pygame.sprite.Sprite):
     
 
     # -- Methods
-    def __init__(self, x, y):
+    def __init__(self, x, y, left_bound, right_bound):
         """ Constructor function """
 
         # Call the parent's constructor
@@ -586,7 +615,10 @@ class Enemy_Midget(pygame.sprite.Sprite):
         self.idleCount = 0
         self.attackCount = 0
         
-        self.health = 10
+        self.health = 20
+        
+        self.left_bound = left_bound
+        self.right_bound = right_bound
         
         
         walkRight = [pygame.image.load('images/enemy_sprites/rogue like run_Animation 1_0.png'), 

@@ -76,7 +76,7 @@ class Player(pygame.sprite.Sprite):
         self.bowCount = 0
         self.climbCount = 0
         self.ammo = 10
-        self.health = 40
+        self.health = 150
         
         walkRight = [pygame.image.load('images/character_sprites/adventurer-run-00.png'), 
                      pygame.image.load('images/character_sprites/adventurer-run-01.png'), 
@@ -461,7 +461,7 @@ class Player(pygame.sprite.Sprite):
         if self.rect.y >= constants.SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
             self.change_y = 0
             self.rect.y = constants.SCREEN_HEIGHT - self.rect.height
-            self.isJump = False
+            self.Idle()
 
 
     def jump(self):
@@ -572,20 +572,6 @@ class Player(pygame.sprite.Sprite):
         self.bowCount = 0        
         self.crouchCount = 0
         self.change_x = 0
-        
-#        if self.image == self.air_attack_frames_R[1] or self.attack_frames_R[2] or self.attack_frames_R[8] or self.attack_frames_R[13]:
-#            enemy_hit_list = pygame.sprite.spritecollide(self, self.level.enemy_list, False)
-#            for enemy in enemy_hit_list:
-#                if pygame.sprite.collide_rect(self, enemy):
-#                    enemy.subtractHealth()
-#                    #Possible Knockback Mechanic
-#        
-#        if self.image == self.air_attack_frames_L[1] or self.attack_frames_L[2] or self.attack_frames_L[8] or self.attack_frames_L[13]:
-#            enemy_hit_list = pygame.sprite.spritecollide(self, self.level.enemy_list, False)
-#            for enemy in enemy_hit_list:
-#                if pygame.sprite.collide_rect(enemy, self):
-#                    enemy.subtractHealth()
-#                    #Possible Knockback Mechanic      
         
             
         
