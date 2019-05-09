@@ -41,6 +41,8 @@ FLOATING_STONE        = (48, 121, 48, 39)
 
 ROPE                  = (1, 0, 6, 23)
 
+INVISIBLE_BLOCK       = (0, 0, 28, 29)
+
 class Platform(pygame.sprite.Sprite):
     """ Platform the user can jump on """
 
@@ -67,7 +69,7 @@ class Rope(pygame.sprite.Sprite):
     def __init__(self, sprite_sheet_data):
         
         pygame.sprite.Sprite.__init__(self)
-        sprite_sheet = SpriteSheet('images/rope_sprites/rope.png')
+        sprite_sheet = SpriteSheet('images/Invisible_Block.png')
         
         self.image = sprite_sheet.get_image(sprite_sheet_data[0],
                                             sprite_sheet_data[1],

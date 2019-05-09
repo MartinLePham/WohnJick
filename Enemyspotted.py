@@ -127,13 +127,13 @@ class Enemy_Bandit(pygame.sprite.Sprite):
         self.wander()   
 #        self.boundaries()
             
-        if self.walkCount + 1 > 18: # 3 frames per walking frame
+        if self.walkCount + 1 > 24: # 3 frames per walking frame
             self.walkCount = 0
             
-        if self.idleCount +1 > 15: # 5 frames per idle frame
+        if self.idleCount +1 > 30: # 5 frames per idle frame
             self.idleCount = 0
                                   
-        if self.attackCount +1 >34:
+        if self.attackCount +1 > 14:
             self.attackCount = 0
                         
         #Right Movements      
@@ -265,11 +265,6 @@ class Enemy_Bandit(pygame.sprite.Sprite):
             self.change_y = 1
         else:
             self.change_y += .35
-        
-# =============================================================================
-#         if self.change_y > 0:
-#             self.change_x = 0
-# =============================================================================
 
         # See if we are on the ground.
         if self.rect.y >= constants.SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
@@ -359,7 +354,7 @@ class Enemy_Blob(pygame.sprite.Sprite):
         self.left_bound = left_bound
         self.right_bound = right_bound
         
-        walkRight = [pygame.image.load('images/enemy_sprites/Blob_Running_001.png'), 
+        walkLeft = [pygame.image.load('images/enemy_sprites/Blob_Running_001.png'), 
                      pygame.image.load('images/enemy_sprites/Blob_Running_002.png'), 
                      pygame.image.load('images/enemy_sprites/Blob_Running_003.png'), 
                      pygame.image.load('images/enemy_sprites/Blob_Running_004.png'), 
@@ -367,10 +362,10 @@ class Enemy_Blob(pygame.sprite.Sprite):
                      pygame.image.load('images/enemy_sprites/Blob_Running_006.png'),
                      pygame.image.load('images/enemy_sprites/Blob_Running_007.png'),
                      pygame.image.load('images/enemy_sprites/Blob_Running_008.png')]
-        for i in walkRight:
-            self.walking_frames_R.append(i)
+        for i in walkLeft:
+            self.walking_frames_L.append(i)
         
-        walkLeft = [pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Running_001.png'),True, False),
+        walkRight = [pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Running_001.png'),True, False),
                     pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Running_002.png'),True, False),
                     pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Running_003.png'),True, False),
                     pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Running_004.png'),True, False),
@@ -378,28 +373,28 @@ class Enemy_Blob(pygame.sprite.Sprite):
                     pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Running_006.png'),True, False),
                     pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Running_007.png'),True, False),
                     pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Running_008.png'),True, False)]
-        for i in walkLeft:    
-            self.walking_frames_L.append(i)
+        for i in walkRight:    
+            self.walking_frames_R.append(i)
 
-        idle = [pygame.image.load('images/enemy_sprites/Blob_Idle_001.png'), 
+        idleLeft = [pygame.image.load('images/enemy_sprites/Blob_Idle_001.png'), 
                 pygame.image.load('images/enemy_sprites/Blob_Idle_002.png'), 
                 pygame.image.load('images/enemy_sprites/Blob_Idle_003.png'), 
                 pygame.image.load('images/enemy_sprites/Blob_Idle_004.png'),
                 pygame.image.load('images/enemy_sprites/Blob_Idle_005.png'),
                 pygame.image.load('images/enemy_sprites/Blob_Idle_006.png')]
-        for i in idle:
-            self.idle_frames_R.append(i)
+        for i in idleLeft:
+            self.idle_frames_L.append(i)
         
-        idleLeft = [pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Idle_001.png'),True, False),
+        idle = [pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Idle_001.png'),True, False),
                     pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Idle_002.png'),True, False),
                     pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Idle_003.png'),True, False),
                     pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Idle_004.png'),True, False),
                     pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Idle_005.png'),True, False),
                     pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Idle_006.png'),True, False)]
-        for i in idleLeft:
-            self.idle_frames_L.append(i)
+        for i in idle:
+            self.idle_frames_R.append(i)
         
-        attack =  [pygame.image.load('images/enemy_sprites/Blob_Attack_001.png'),
+        attackLeft =  [pygame.image.load('images/enemy_sprites/Blob_Attack_001.png'),
                    pygame.image.load('images/enemy_sprites/Blob_Attack_002.png'),
                    pygame.image.load('images/enemy_sprites/Blob_Attack_003.png'), 
                    pygame.image.load('images/enemy_sprites/Blob_Attack_004.png'), 
@@ -407,10 +402,10 @@ class Enemy_Blob(pygame.sprite.Sprite):
                    pygame.image.load('images/enemy_sprites/Blob_Attack_006.png'), 
                    pygame.image.load('images/enemy_sprites/Blob_Attack_007.png'),
                    pygame.image.load('images/enemy_sprites/Blob_Attack_008.png')]
-        for i in attack:
-            self.attack_frames_R.append(i)
+        for i in attackLeft:
+            self.attack_frames_L.append(i)
         
-        attackLeft = [pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Attack_001.png'),True, False),
+        attack = [pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Attack_001.png'),True, False),
                       pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Attack_002.png'),True, False),
                       pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Attack_003.png'),True, False),
                       pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Attack_004.png'),True, False),
@@ -418,8 +413,8 @@ class Enemy_Blob(pygame.sprite.Sprite):
                       pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Attack_006.png'),True, False),
                       pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Attack_007.png'),True, False),
                       pygame.transform.flip(pygame.image.load('images/enemy_sprites/Blob_Attack_008.png'),True, False)]
-        for i in attackLeft:
-            self.attack_frames_L.append(i)
+        for i in attack:
+            self.attack_frames_R.append(i)
 
         # Set the image the player starts with
         self.image = self.idle_frames_R[0]
@@ -436,13 +431,13 @@ class Enemy_Blob(pygame.sprite.Sprite):
 #        self.boundaries()
             
         
-        if self.walkCount + 1 > 18: # 3 frames per walking frame
+        if self.walkCount + 1 > 24: # 3 frames per walking frame
             self.walkCount = 0
             
-        if self.idleCount +1 > 15: # 5 frames per idle frame
+        if self.idleCount +1 > 30: # 5 frames per idle frame
             self.idleCount = 0
                                   
-        if self.attackCount +1 >34:
+        if self.attackCount +1 > 16:
             self.attackCount = 0
                         
         #Right Movements      
@@ -456,8 +451,6 @@ class Enemy_Blob(pygame.sprite.Sprite):
          
         elif self.isAttack and self.right:
             self.image = self.attack_frames_R[self.attackCount//2]
-#            player_hit_list = pygame.sprite.spritecollide(self, self.player, False)
-#            for player in player_hit_list:
             if self.image == self.attack_frames_R[2]:
                 if pygame.sprite.collide_rect(self, self.player):
                     self.player.subtractHealth()
@@ -716,13 +709,13 @@ class Enemy_Midget(pygame.sprite.Sprite):
 #        self.boundaries()
             
         
-        if self.walkCount + 1 > 18: # 3 frames per walking frame
+        if self.walkCount + 1 > 15: # 3 frames per walking frame
             self.walkCount = 0
             
         if self.idleCount +1 > 15: # 5 frames per idle frame
             self.idleCount = 0
                                   
-        if self.attackCount +1 >34:
+        if self.attackCount +1 > 8:
             self.attackCount = 0
                         
         #Right Movements      
@@ -736,8 +729,6 @@ class Enemy_Midget(pygame.sprite.Sprite):
          
         elif self.isAttack and self.right:
             self.image = self.attack_frames_R[self.attackCount//2]
-#            player_hit_list = pygame.sprite.spritecollide(self, self.player, False)
-#            for player in player_hit_list:
             if self.image == self.attack_frames_R[2]:
                 if pygame.sprite.collide_rect(self, self.player):
                     self.player.subtractHealth()

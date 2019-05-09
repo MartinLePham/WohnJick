@@ -105,6 +105,8 @@ class Level_01(Level):
                   #Middle Platform
                   [platforms.GRASS_CLIFF_LEFT, 940, 500],
                   [platforms.GRASS_CLIFF_RIGHT, 1400, 500],
+                  #Solo Platform
+                  [platforms.FLOATING_STONE, 700, 450]
                   #Top Right Platform
 #                  [platforms.GRASS_FLOOR_THICK, 0, 730]
                   
@@ -162,7 +164,7 @@ class Level_01(Level):
             block.player = self.player
             self.platform_list.add(block)
 
-        # Add a custom moving platform
+ 
         
         #Ropes
 # =============================================================================
@@ -179,25 +181,27 @@ class Level_01(Level):
 # =============================================================================
         level_bound = []
         
-        level_bound.append([platforms.BLACK_DOT, 240, 170])
-        level_bound.append([platforms.BLACK_DOT, 400, 210])
-        level_bound.append([platforms.BLACK_DOT, 540, 250])
+        level_bound.append([platforms.INVISIBLE_BLOCK, 240, 155])
+        level_bound.append([platforms.INVISIBLE_BLOCK, 400, 195])
+        level_bound.append([platforms.INVISIBLE_BLOCK, 540, 235])
         
-        level_bound.append([platforms.BLACK_DOT, 850, 720])
-        level_bound.append([platforms.BLACK_DOT, 1520, 720])
+        level_bound.append([platforms.INVISIBLE_BLOCK, 850, 720])
+        level_bound.append([platforms.INVISIBLE_BLOCK, 1520, 720])
         
-        level_bound.append([platforms.BLACK_DOT, 1790, 370])
-        level_bound.append([platforms.BLACK_DOT, 1985, 200])
-        level_bound.append([platforms.BLACK_DOT, 2475, 200])
+        level_bound.append([platforms.INVISIBLE_BLOCK, 1790, 370])
+        level_bound.append([platforms.INVISIBLE_BLOCK, 1985, 200])
+        level_bound.append([platforms.INVISIBLE_BLOCK, 2475, 200])
 
 
         
         for brick in level_bound:
-            bound = platforms.Platform(brick[0])
+            bound = platforms.Rope(brick[0])
             bound.rect.x = brick[1]
             bound.rect.y = brick[2]
             self.bound_list.add(bound)
-        
+            
+        #Add a custom moving platform   
+       
         #Left Floating Platform
         block = platforms.MovingPlatform(platforms.FLOATING_STONE)
         block.rect.x = 550
@@ -255,22 +259,30 @@ class Level_01(Level):
 #         self.platform_list.add(block)
 # =============================================================================
 
-        #Enemies
+        # Test Enemies
+        """ Enemies for Demonstration"""
 # =============================================================================
-#         enemy = Enemyspotted.Enemy_Bandit(1000, 600, 940, 1400)
+#         enemy = Enemyspotted.Enemy_Bandit(400, 650, 240, 400)
 #         enemy.player = self.player
 #         enemy.level = self
 #         self.enemy_list.add(enemy)
 # =============================================================================
         
 # =============================================================================
-#         enemy = Enemyspotted.Enemy_Bandit(250, 150, 240, 400)
+#         enemy = Enemyspotted.Enemy_Blob(400, 650, 240, 400)
+#         enemy.player = self.player
+#         enemy.level = self
+#         self.enemy_list.add(enemy)        
+# =============================================================================
+        
+# =============================================================================
+#         enemy = Enemyspotted.Enemy_Midget(400, 650, 240, 400)
 #         enemy.player = self.player
 #         enemy.level = self
 #         self.enemy_list.add(enemy)
 # =============================================================================
-        
-        
+          
+        """ Enemies for Game """
         #Spawn Enemies
         Platform_Areas_Bottom = []
         Platform_Areas_Top_Left = []
@@ -327,6 +339,7 @@ class Level_01(Level):
                  enemy.level = self
                  self.enemy_list.add(enemy)  
                  
+                 
 # =============================================================================
 #         Platform_Areas = []
 #         Platform_Areas.append(Bottom_Left_Area)
@@ -362,30 +375,7 @@ class Level_01(Level):
 #                     enemy.level = self
 #                     self.enemy_list.add(enemy)
 # =============================================================================
-        
-# =============================================================================
-#         level_enemies = []
-#         max_enemies = 10
-#         enemies_spawned = 0    
-#         while enemies_spawned < max_enemies + 1:
-#             for area in Platform_Areas: 
-#                 bandit_spawned = 0
-#                 blob_spawned = 0
-#                 while bandit_spawned < random.randint(0, area[2] + 1):
-#                     bandit.rect.x = random.randint(area[0][0], area[0][1])
-#                     bandit.rect.y = area[1]
-#                     level_enemies.append(bandit)
-#                     bandit_spawned += 1
-#                     enemies_spawned += 1
-# =============================================================================
-# =============================================================================
-#                 enemies_left = area[2] - bandit_spawned
-#                 if enemies_left < area[2]:
-#                     while blob_spawned < enemies_left:
-#                         blob.rect.x = random.randint(area[0][0], area[0][1])
-#                         blob.rect.y = area[1]
-#                         self.enemy_list.add(blob)
-# =============================================================================
+    
             
 
 
