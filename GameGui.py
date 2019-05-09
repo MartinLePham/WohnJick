@@ -1,7 +1,7 @@
 from tkinter import *
 window = Tk()
 def processSTART():
-    return(print('final running file name here'))
+    return(print('platform-scroller.py'))
 label = Label(window, text="Start Game?")
 button = Button(window, text = "START", command=processSTART)
 
