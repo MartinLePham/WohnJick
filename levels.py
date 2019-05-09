@@ -6,12 +6,8 @@ import Enemyspotted
 import random
 
 class Level():
-    """ This is a generic super-class used to define a level.
-        Create a child class for each level with level-specific
-        info. """
 
-    # Lists of sprites used in all levels. Add or remove
-    # lists as needed for your game. """
+    # Lists of sprites used in levels
     platform_list = None
     rope_list = None
     bound_list = None
@@ -24,15 +20,12 @@ class Level():
     world_shift = 0
 
     def __init__(self, player):
-        """ Constructor. Pass in a handle to player. Needed for when moving platforms
-            collide with the player. """
         self.platform_list = pygame.sprite.Group()
         self.enemy_list = pygame.sprite.Group()
         self.rope_list = pygame.sprite.Group()
         self.bound_list = pygame.sprite.Group()
         self.player = player
 
-    # Update everythign on this level
     def update(self,screen):
         """ Update everything in this level."""
         self.platform_list.update()
@@ -48,8 +41,6 @@ class Level():
         """ Draw everything on this level. """
 
         # Draw the background
-        # We don't shift the background as much as the sprites are shifted
-        # to give a feeling of depth.
         screen.fill(constants.WHITE)
         screen.blit(self.background,(self.world_shift // 3,0))
         
@@ -61,7 +52,7 @@ class Level():
         self.enemy_list.draw(screen)
 
     def shift_world(self, shift_x):
-        """ When the user moves left/right and we need to scroll everything: """
+        """ When player moves left/right, we need to scroll everything: """
 
         # Keep track of the shift amount
         self.world_shift += shift_x
@@ -83,13 +74,9 @@ class Level():
 
 # Create platforms for the level
 class Level_01(Level):
-    """ Definition for level 1. """
     
     def __init__(self, player):
-        """ Create level 1. """
         
-        
-        # Call the parent constructor
         Level.__init__(self, player)
         
         self.level_limit = -1*constants.SCREEN_WIDTH
@@ -156,7 +143,7 @@ class Level_01(Level):
             level.append([platforms.STONE_CLIFF_FILL, constants.SCREEN_WIDTH + 16, y])
         
 
-        # Go through the array above and add platforms
+        # Go through the array and add platforms
         for platform in level:
             block = platforms.Platform(platform[0])
             block.rect.x = platform[1]
@@ -382,12 +369,9 @@ class Level_01(Level):
 # Create platforms for the level
 # =============================================================================
 # class Level_02(Level):
-#     """ Definition for level 2. """
 # 
 #     def __init__(self, player):
-#         """ Create level 1. """
 # 
-#         # Call the parent constructor
 #         Level.__init__(self, player)
 # 
 #         self.background = pygame.image.load("background_02.png").convert()
@@ -410,7 +394,7 @@ class Level_01(Level):
 #                   ]
 # 
 # 
-#         # Go through the array above and add platforms
+#         # Go through the array and add platforms
 #         for platform in level:
 #             block = platforms.Platform(platform[0])
 #             block.rect.x = platform[1]
