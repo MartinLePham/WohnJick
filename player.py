@@ -1,7 +1,3 @@
-"""
-This module is used to hold the Player class. The Player represents the user-
-controlled sprite on the screen.
-"""
 import pygame
 
 import constants
@@ -11,8 +7,6 @@ from spritesheet_functions import SpriteSheet
 import sound_library
 
 class Player(pygame.sprite.Sprite):
-    """ This class represents the bar at the bottom that the player
-    controls. """
 
     # -- Attributes
     # Set speed vector of player
@@ -41,18 +35,14 @@ class Player(pygame.sprite.Sprite):
     death_frames_R = []
     climb_frames = []
     
-        
-    # What direction is the player facing?
 
     # List of sprites we can bump against
     level = None
     enemies = None
 
-    # -- Methods
-    def __init__(self):
-        """ Constructor function """
 
-        # Call the parent's constructor
+    def __init__(self):
+
         pygame.sprite.Sprite.__init__(self)
         
         self.isJump = False
@@ -263,7 +253,6 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, screen):
         """ Move the player. """
-        # Gravity
         self.calc_grav()
         
         if self.walkCount + 1 > 18: # 3 frames per walking frame
@@ -377,7 +366,6 @@ class Player(pygame.sprite.Sprite):
                     if pygame.sprite.collide_rect(self, enemy):
                         enemy.subtractHealth()
                         pygame.mixer.Sound.play(sound_library.Enemy_got_hit_sound)
-#                        sound_library.Enemy_got_hit_sound.play()
             self.airAttackCount +=1
 
             
@@ -393,7 +381,6 @@ class Player(pygame.sprite.Sprite):
                     if pygame.sprite.collide_rect(self, enemy):
                         enemy.subtractHealth()
                         pygame.mixer.Sound.play(sound_library.Enemy_got_hit_sound)
-#                        sound_library.Enemy_got_hit_sound.play()
             self.attackCount += 1            
             
         elif self.isCrouch and self.left and not self.isJump and not self.isIdle and not self.isAttack:
@@ -415,12 +402,11 @@ class Player(pygame.sprite.Sprite):
         # See if we hit anything
         block_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
         for block in block_hit_list:
-            # If we are moving right,
-            # set our right side to the left side of the item we hit
+            # If we are moving right, set our right side to the left side of the platform we hit
             if self.change_x > 0:
                 self.rect.right = block.rect.left
             elif self.change_x < 0:
-                # Otherwise if we are moving left, do the opposite.
+                # If we are moving left, do the opposite.
                 self.rect.left = block.rect.right
 
         # Move up/down
@@ -465,11 +451,9 @@ class Player(pygame.sprite.Sprite):
 
 
     def jump(self):
-        """ Called when user hits 'jump' button. """
 
-        # move down a bit and see if there is a platform below us.
-        # Move down 2 pixels because it doesn't work well if we only move down 1
-        # when working with a platform moving down.
+        # Move down a bit and see if there is a platform below us.
+        # Move down 2 pixels in case of moving platform
         self.rect.y += 2
         platform_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
         self.rect.y -= 2
@@ -478,7 +462,6 @@ class Player(pygame.sprite.Sprite):
             self.change_y = -20
             self.isJump = True
             pygame.mixer.Sound.play(sound_library.jump_sound)
-#            sound_library.jump_sound.play()
             
         self.isIdle = False
         self.isAttack = False
@@ -488,8 +471,7 @@ class Player(pygame.sprite.Sprite):
         self.walkCount = 0
         self.attackCount = 0
         self.crouchCount = 0
-        
-        
+            
     def Idle(self):
         self.change_x = 0
         self.isIdle = True
@@ -524,8 +506,7 @@ class Player(pygame.sprite.Sprite):
         self.attackCount = 0
         self.airAttackCount = 0
         self.crouchCount = 0
-        
-            
+             
     def RunRight (self):
         self.change_x = 10
         self.left = False
@@ -572,8 +553,6 @@ class Player(pygame.sprite.Sprite):
         self.bowCount = 0        
         self.crouchCount = 0
         self.change_x = 0
-        
-            
         
     def Shoot(self):
         self.isBow = True
