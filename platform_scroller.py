@@ -43,7 +43,7 @@ def main():
 
 #    you_died =  pygame.transform.scale(pygame.image.load('images/you_died.jpg'), (1400,constants.SCREEN_HEIGHT))
 
-    #Loop until the user clicks the close button.
+    #Loop until closed
     done = False
 
     # Used to manage how fast the screen updates
@@ -51,9 +51,9 @@ def main():
 
     # -------- Main Program Loop -----------
     while not done:
-        for event in pygame.event.get(): # User did something
-            if event.type == pygame.QUIT: # If user clicked close
-                done = True # Flag that we are done so we exit this loop
+        for event in pygame.event.get(): # User input
+            if event.type == pygame.QUIT:
+                done = True
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
@@ -81,7 +81,7 @@ def main():
                 if event.key == pygame.K_DOWN:
                     player.Idle()
 
-        # Update the player.
+        # Update the player
         active_sprite_list.update(screen)
 
         # Update items in the level
@@ -91,10 +91,9 @@ def main():
         if player.rect.x >= 800:
             diff = player.rect.x - 800
             if current_level.world_shift - size[0] >= current_level.level_limit:
-                player.rect.x = 800
+                player.rect.x = 800 #Reset player to the middle
                 current_level.shift_world(-diff)
-#                print(current_level.world_shift)
-            else:
+            else: #Don't shift if player near right side of the screen
                 current_level.shift_world(0)
 
         # If the player gets near the left side, shift the world right (+x)
@@ -102,11 +101,12 @@ def main():
         if player.rect.x < 800:
             diff = 800 - player.rect.x
             if current_level.world_shift < 0:
-                player.rect.x = 800
+                player.rect.x = 800 #Reset player to the middle
                 current_level.shift_world(diff)
-            else:
+            else: #Don't shift if player near left side of screen
                 current_level.world_shift = 0
 
+        # If player hits the left or right screen
         if player.rect.left == 0:
             player.change_x = 0
             player.rect.left = 0
@@ -115,36 +115,22 @@ def main():
             player.change_x = 0
             player.rect.right = size[0]
             
-            
-        # If the player gets to the end of the level, go to the next level
-# =============================================================================
-#         current_position = player.rect.x + current_level.world_shift
-#         if current_position < current_level.level_limit:
-#             player.rect.x = 120
-#             if current_level_no < len(level_list)-1:
-#                 current_level_no += 1
-#                 current_level = level_list[current_level_no]
-#                 player.level = current_level
-# =============================================================================
 
-        # ALL CODE TO DRAW SHOULD GO BELOW THIS COMMENT
+        # Draw Everything
         current_level.draw(screen)
         active_sprite_list.draw(screen)
 
-        # ALL CODE TO DRAW SHOULD GO ABOVE THIS COMMENT
 
         # Limit to 60 frames per second
         clock.tick(60)
 
-        # Go ahead and update the screen with what we've drawn.
+        # Update the screen with what we've drawn.
         pygame.display.flip()
 
         if player.Health() <= 0:
             if player.deathCount >= 34:
                 done = True
 
-    # Be IDLE friendly. If you forget this line, the program will 'hang'
-    # on exit.
     pygame.quit()
 
 if __name__ == "__main__":
