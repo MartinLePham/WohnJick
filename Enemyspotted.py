@@ -8,8 +8,6 @@ import random
 import numpy
 
 class Enemy_Bandit(pygame.sprite.Sprite):
-    """ This class represents the bar at the bottom that the player
-    controls. """
 
     # -- Attributes
     # Set speed vector of enemy
@@ -31,12 +29,8 @@ class Enemy_Bandit(pygame.sprite.Sprite):
     level = None
     player = None
     
-
-    # -- Methods
     def __init__(self, x, y, left_bound, right_bound):
-        """ Constructor function """
 
-        # Call the parent's constructor
         pygame.sprite.Sprite.__init__(self)
        
         self.left = False
@@ -122,7 +116,7 @@ class Enemy_Bandit(pygame.sprite.Sprite):
         self.rect.y = y
 
     def update(self, screen):
-        """ Move the player. """
+        """ Enemy Actions """
         self.calc_grav()
         self.wander()   
 #        self.boundaries()
@@ -176,12 +170,9 @@ class Enemy_Bandit(pygame.sprite.Sprite):
         # See if we hit anything
         block_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
         for block in block_hit_list:
-            # If we are moving right,
-            # set our right side to the left side of the item we hit
             if self.change_x > 0:
                 self.rect.right = block.rect.left
             elif self.change_x < 0:
-                # Otherwise if we are moving left, do the opposite.
                 self.rect.left = block.rect.right
 
         bound_hit_list = pygame.sprite.spritecollide(self, self.level.bound_list, False)
@@ -311,8 +302,6 @@ class Enemy_Bandit(pygame.sprite.Sprite):
                    
 
 class Enemy_Blob(pygame.sprite.Sprite):
-    """ This class represents the bar at the bottom that the player
-    controls. """
 
     # -- Attributes
     # Set speed vector of enemy
@@ -334,11 +323,8 @@ class Enemy_Blob(pygame.sprite.Sprite):
     player = None
     
 
-    # -- Methods
     def __init__(self, x, y, left_bound, right_bound):
-        """ Constructor function """
 
-        # Call the parent's constructor
         pygame.sprite.Sprite.__init__(self)
        
         self.left = False
@@ -480,12 +466,9 @@ class Enemy_Blob(pygame.sprite.Sprite):
         # See if we hit anything
         block_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
         for block in block_hit_list:
-            # If we are moving right,
-            # set our right side to the left side of the item we hit
             if self.change_x > 0:
                 self.rect.right = block.rect.left
             elif self.change_x < 0:
-                # Otherwise if we are moving left, do the opposite.
                 self.rect.left = block.rect.right
                 
         bound_hit_list = pygame.sprite.spritecollide(self, self.level.bound_list, False)
@@ -606,8 +589,6 @@ class Enemy_Blob(pygame.sprite.Sprite):
             #-------INSERT DEATH ANIMATION-------------
                    
 class Enemy_Midget(pygame.sprite.Sprite):
-    """ This class represents the bar at the bottom that the player
-    controls. """
 
     # -- Attributes
     # Set speed vector of enemy
@@ -629,11 +610,9 @@ class Enemy_Midget(pygame.sprite.Sprite):
     player = None
     
 
-    # -- Methods
-    def __init__(self, x, y, left_bound, right_bound):
-        """ Constructor function """
 
-        # Call the parent's constructor
+    def __init__(self, x, y, left_bound, right_bound):
+
         pygame.sprite.Sprite.__init__(self)
        
         self.left = False
@@ -758,12 +737,9 @@ class Enemy_Midget(pygame.sprite.Sprite):
         # See if we hit anything
         block_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
         for block in block_hit_list:
-            # If we are moving right,
-            # set our right side to the left side of the item we hit
             if self.change_x > 0:
                 self.rect.right = block.rect.left
             elif self.change_x < 0:
-                # Otherwise if we are moving left, do the opposite.
                 self.rect.left = block.rect.right
 
         bound_hit_list = pygame.sprite.spritecollide(self, self.level.bound_list, False)
@@ -791,9 +767,7 @@ class Enemy_Midget(pygame.sprite.Sprite):
 
             if isinstance(block, MovingPlatform):
                 self.rect.x += block.change_x
-                
-#        self.boundaries()
-                
+                         
             
     def wander(self):
         """Wandering Movement"""
