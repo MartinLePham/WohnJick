@@ -119,7 +119,6 @@ class Enemy_Bandit(pygame.sprite.Sprite):
         """ Enemy Actions """
         self.calc_grav()
         self.wander()   
-#        self.boundaries()
             
         if self.walkCount + 1 > 24: # 3 frames per walking frame
             self.walkCount = 0
@@ -229,26 +228,6 @@ class Enemy_Bandit(pygame.sprite.Sprite):
                     self.RunLeft()
                 elif random_direction == 'Right':
                     self.RunRight()
-                    
-# =============================================================================
-#     def boundaries(self):
-#         if self.rect.right >= self.right_bound:
-#             self.change_x = 0
-#             self.rect.right = self.right_bound
-#         if self.rect.left <= self.left_bound:
-#             self.change_x = 0
-#             self.rect.left = self.left_bound
-# # =============================================================================
-# #         if self.change_x > 0:
-# #             if self.rect.x + self.change_x >= self.right_bound - self.rect.width:
-# #                 self.change_x = 0
-# #                 self.rect.x = self.right_bound - self.rect.width
-# #         elif self.change_x < 0:
-# #             if self.rect.left <= self.left_bound:
-# #                 self.change_x = 0
-# #                 
-# # =============================================================================
-# =============================================================================
                     
     def calc_grav(self):
         """ Calculate effect of gravity. """
@@ -414,7 +393,6 @@ class Enemy_Blob(pygame.sprite.Sprite):
         """ Move the player. """
         self.calc_grav()
         self.wander()   
-#        self.boundaries()
             
         
         if self.walkCount + 1 > 24: # 3 frames per walking frame
@@ -519,24 +497,6 @@ class Enemy_Blob(pygame.sprite.Sprite):
                 elif random_direction == 'Right':
                     self.RunRight()
                     
-# =============================================================================
-#     def boundaries(self):
-#         if self.rect.right + self.change_x == self.right_bound:
-#             self.change_x = 0
-#             self.rect.right = self.right_bound
-#         if self.rect.left == self.left_bound:
-#             self.change_x = 0
-#             self.rect.left = self.left_bound
-# # =============================================================================
-# #         if self.change_x > 0:
-# #             if self.rect.x + self.change_x >= self.right_bound - self.rect.width:
-# #                 self.change_x = 0
-# #                 self.rect.x = self.right_bound - self.rect.width
-# #         elif self.change_x < 0:
-# #             if self.rect.left <= self.left_bound:
-# #                 self.change_x = 0
-# # =============================================================================
-# =============================================================================
                 
     def calc_grav(self):
         """ Calculate effect of gravity. """
@@ -685,7 +645,6 @@ class Enemy_Midget(pygame.sprite.Sprite):
         """ Move the player. """
         self.calc_grav()
         self.wander() 
-#        self.boundaries()
             
         
         if self.walkCount + 1 > 15: # 3 frames per walking frame
@@ -789,27 +748,6 @@ class Enemy_Midget(pygame.sprite.Sprite):
                     self.RunLeft()
                 elif random_direction == 'Right':
                     self.RunRight()
-
-# =============================================================================
-#     def boundaries(self):
-#         if self.rect.x > self.right_bound:
-#             self.change_x = 0
-#             self.rect.x = 0
-#         elif self.rect.left < self.left_bound:
-#             self.change_x = -self.change_x
-#             self.rect.left = self.left_bound
-# # =============================================================================
-# #         if self.change_x > 0:
-# #             if self.rect.x + self.change_x >= self.right_bound - self.image.get_width():
-# #                 self.change_x = 0
-# #                 self.rect.x = self.right_bound - self.image.get_width()
-# # =============================================================================
-# # =============================================================================
-# #         if self.change_x < 0:
-# #             if self.rect.x < self.left_bound:
-# #                 self.change_x = 0
-# # =============================================================================
-# =============================================================================
                 
     def calc_grav(self):
         """ Calculate effect of gravity. """
