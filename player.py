@@ -66,7 +66,7 @@ class Player(pygame.sprite.Sprite):
         self.bowCount = 0
         self.climbCount = 0
         self.ammo = 10
-        self.health = 150
+        self.health = 450
         
         walkRight = [pygame.image.load('images/character_sprites/adventurer-run-00.png'), 
                      pygame.image.load('images/character_sprites/adventurer-run-01.png'), 
